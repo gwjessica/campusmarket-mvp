@@ -29,98 +29,8 @@
         </div>
     </div>
 
-    <main class="px-6">
+    <main class="px-6" id="orders-container">
         
-        <div id="view-topay" class="order-view hidden">
-            <div class="bg-white/40 rounded-[45px] p-6 border border-white/40">
-                <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=500" class="w-full aspect-square object-cover rounded-[35px] mb-6">
-                <div class="flex justify-between items-start mb-1">
-                    <h4 class="text-2xl font-bold text-dark-green w-2/3">Silence Pro Wireless</h4>
-                    <span class="bg-[#D4E89C] text-[8px] font-bold px-3 py-1.5 rounded-full text-green-900">PENDING PAYMENT</span>
-                </div>
-                <p class="text-3xl font-bold text-dark-green mb-1">$180.00</p>
-                <p class="text-[10px] text-gray-400 font-bold mb-8">📍 Petra Christian University</p>
-                
-                <div class="space-y-4">
-                    <button class="w-full bg-dark-green text-white font-bold py-5 rounded-full shadow-lg">Pay Now</button>
-                    <button class="w-full bg-[#EBEAD2]/60 text-dark-green font-bold py-5 rounded-full">Contact Seller</button>
-                </div>
-                <div class="mt-8 flex justify-between items-center px-2">
-                    <div class="text-[10px] font-bold text-gray-400 uppercase">Secure Transaction<br><span class="text-dark-green">Buyer Protection Active</span></div>
-                    <span class="text-2xl">🛡️</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="view-ongoing" class="order-view hidden">
-            <div class="bg-cream-card/40 rounded-[45px] p-8">
-                <div class="flex gap-5 mb-8">
-                    <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=500" class="w-20 h-20 rounded-2xl object-cover bg-black">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-dark-green text-lg">Silence Pro Wireless</h4>
-                        <p class="text-[10px] text-gray-400 font-bold">Order #382910</p>
-                        <div class="flex justify-between items-end mt-2">
-                            <span class="font-bold text-lg">$180.00</span>
-                            <span class="bg-[#D4E89C] text-[8px] font-bold px-2 py-1 rounded-full text-green-800 uppercase">Active</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="bg-white/60 p-5 rounded-3xl">
-                        <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Date</p>
-                        <p class="font-bold text-sm">Oct 24, 2023</p>
-                    </div>
-                    <div class="bg-white/60 p-5 rounded-3xl">
-                        <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Status</p>
-                        <p class="font-bold text-sm text-green-700">● Ready for Pickup</p>
-                    </div>
-                </div>
-
-                <div class="bg-dark-green p-2 rounded-full flex items-center relative mb-8 overflow-hidden group">
-                    <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center text-dark-green shadow-lg z-10 cursor-grab active:cursor-grabbing">➜</div>
-                    <p class="text-white text-[10px] font-bold tracking-widest absolute inset-0 flex items-center justify-center pl-6">SWIPE TO COMPLETE</p>
-                </div>
-
-                <div class="bg-white/40 p-6 rounded-[30px] flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-[#EBEAD2] p-3 rounded-2xl text-lg">📍</div>
-                        <div>
-                            <p class="font-bold text-[10px] text-dark-green">Pickup Location</p>
-                            <p class="text-[9px] text-gray-400 font-medium">Flagship Store • 0.4 miles away</p>
-                        </div>
-                    </div>
-                    <button class="text-[9px] font-bold text-dark-green border-b border-dark-green">GET DIRECTIONS</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="view-collected" class="order-view hidden space-y-6">
-            <div class="bg-white/40 rounded-[35px] p-4 flex gap-4 items-center">
-                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300" class="w-20 h-20 rounded-2xl object-cover bg-black">
-                <div class="flex-1">
-                    <div class="flex justify-between items-start">
-                        <span class="text-[8px] font-bold text-green-800 uppercase">Collected</span>
-                        <span class="text-[8px] font-bold text-gray-400 uppercase">Oct 12, 2023</span>
-                    </div>
-                    <h4 class="font-bold text-dark-green text-sm">Over-Ear ANC Headphones</h4>
-                    <p class="text-[9px] text-gray-400 mt-1">Transferred via SecureLock Pay</p>
-                    <p class="font-bold text-lg mt-2">$189.00</p>
-                </div>
-            </div>
-            <div class="bg-white/40 rounded-[35px] p-4 flex gap-4 items-center">
-                <img src="https://images.unsplash.com/photo-1587829741301-dc798b83bac1?auto=format&fit=crop&w=300" class="w-20 h-20 rounded-2xl object-cover bg-black">
-                <div class="flex-1">
-                    <div class="flex justify-between items-start">
-                        <span class="text-[8px] font-bold text-green-800 uppercase">Collected</span>
-                        <span class="text-[8px] font-bold text-gray-400 uppercase">Sept 28, 2023</span>
-                    </div>
-                    <h4 class="font-bold text-dark-green text-sm">Custom Mechanical Keyboard</h4>
-                    <p class="text-[9px] text-gray-400 mt-1">Pick up from Northside Terminal</p>
-                    <p class="font-bold text-lg mt-2">$145.50</p>
-                </div>
-            </div>
-        </div>
 
     </main>
 
@@ -134,22 +44,117 @@
         <button onclick="window.location.href='profile.html'" class="p-4 text-gray-400 text-xl">👤</button>
     </nav>
 
+    <script src="db.js"></script>
     <script>
-        function switchTab(tabName) {
-            // Hide all views
-            document.querySelectorAll('.order-view').forEach(v => v.classList.add('hidden'));
-            // Remove active style from all buttons
-            document.querySelectorAll('#btn-topay, #btn-ongoing, #btn-collected').forEach(b => b.classList.remove('tab-active'));
+        function renderOrders(tabName) {
+            const currentUser = getCurrentUser();
+            if (!currentUser) return window.location.href = 'login.html';
+
+            const allOrders = getOrders();
+            const allProducts = getProducts();
+            const container = document.getElementById('orders-container');
             
-            // Show selected view
-            document.getElementById('view-' + tabName).classList.remove('hidden');
-            document.getElementById('btn-' + tabName).classList.add('tab-active');
+            // Filter: Hanya order milik user yang login DAN statusnya cocok dengan tab
+            const filteredOrders = allOrders.filter(o => o.user_id === currentUser.id && o.status === tabName);
+
+            if (filteredOrders.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 mt-10">No orders here yet.</p>`;
+                return;
+            }
+
+            container.innerHTML = ''; // Clear container
+
+            filteredOrders.forEach(order => {
+                const product = allProducts.find(p => p.id === order.product_id);
+                if (!product) return;
+
+                let cardHTML = '';
+
+                // Template Card berdasarkan status (mirip mockup kamu)
+                if (tabName === 'topay') {
+                    cardHTML = `
+                        <div class="bg-white/40 rounded-[45px] p-6 border border-white/40 mb-6">
+                            <img src="${product.image}" class="w-full aspect-square object-cover rounded-[35px] mb-6">
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="text-2xl font-bold text-dark-green w-2/3">${product.name}</h4>
+                                <span class="bg-[#D4E89C] text-[8px] font-bold px-3 py-1.5 rounded-full text-green-900">PENDING PAYMENT</span>
+                            </div>
+                            <p class="text-3xl font-bold text-dark-green mb-1">$${product.price.toFixed(2)}</p>
+                            <p class="text-[10px] text-gray-400 font-bold mb-8">📍 ${product.location}</p>
+                            <div class="space-y-4">
+                                <button onclick="payOrder('${order.id}')" class="w-full bg-dark-green text-white font-bold py-5 rounded-full shadow-lg">Pay Now</button>
+                            </div>
+                        </div>
+                    `;
+                } else if (tabName === 'ongoing') {
+                    cardHTML = `
+                        <div class="bg-cream-card/40 rounded-[45px] p-8 mb-6">
+                            <div class="flex gap-5 mb-8">
+                                <img src="${product.image}" class="w-20 h-20 rounded-2xl object-cover bg-black">
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-dark-green text-lg">${product.name}</h4>
+                                    <p class="text-[10px] text-gray-400 font-bold">Order ${order.order_no}</p>
+                                    <div class="flex justify-between items-end mt-2">
+                                        <span class="font-bold text-lg">$${product.price.toFixed(2)}</span>
+                                        <span class="bg-[#D4E89C] text-[8px] font-bold px-2 py-1 rounded-full text-green-800 uppercase">Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-8">
+                                <div class="bg-white/60 p-5 rounded-3xl"><p class="text-[9px] font-bold text-gray-400 uppercase mb-1">Date</p><p class="font-bold text-sm">${order.date}</p></div>
+                                <div class="bg-white/60 p-5 rounded-3xl"><p class="text-[9px] font-bold text-gray-400 uppercase mb-1">Status</p><p class="font-bold text-sm text-green-700">● Ready for Pickup</p></div>
+                            </div>
+                            <div onclick="completeOrder('${order.id}')" class="bg-dark-green p-2 rounded-full flex items-center relative cursor-pointer group">
+                                <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center text-dark-green shadow-lg z-10">➜</div>
+                                <p class="text-white text-[10px] font-bold tracking-widest absolute inset-0 flex items-center justify-center pl-6">CLICK TO COMPLETE</p>
+                            </div>
+                        </div>
+                    `;
+                } else { // Collected
+                    cardHTML = `
+                        <div class="bg-white/40 rounded-[35px] p-4 flex gap-4 items-center mb-4">
+                            <img src="${product.image}" class="w-20 h-20 rounded-2xl object-cover bg-black">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[8px] font-bold text-green-800 uppercase">Collected</span>
+                                    <span class="text-[8px] font-bold text-gray-400 uppercase">${order.date}</span>
+                                </div>
+                                <h4 class="font-bold text-dark-green text-sm">${product.name}</h4>
+                                <p class="font-bold text-lg mt-2">$${product.price.toFixed(2)}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                container.innerHTML += cardHTML;
+            });
         }
 
-        // Handle URL parameter
-        const params = new URLSearchParams(window.location.search);
-        const activeTab = params.get('tab') || 'topay';
-        switchTab(activeTab);
+        // Fungsi simulasi bayar
+        function payOrder(id) {
+            updateOrderStatus(id, 'ongoing');
+            alert("Payment success! Item is now ongoing.");
+            switchTab('ongoing');
+        }
+
+        // Fungsi simulasi ambil barang
+        function completeOrder(id) {
+            updateOrderStatus(id, 'collected');
+            alert("Item collected! Transaction finished.");
+            switchTab('collected');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('#btn-topay, #btn-ongoing, #btn-collected').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById('btn-' + tabName).classList.add('tab-active');
+            renderOrders(tabName);
+        }
+
+        // Init
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const activeTab = params.get('tab') || 'topay';
+            switchTab(activeTab);
+        };
     </script>
 </body>
 </html>

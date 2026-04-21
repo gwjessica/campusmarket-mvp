@@ -106,14 +106,49 @@
         <button onclick="window.location.href='profile.html'" class="p-4 text-gray-400 text-xl">👤</button>
     </nav>
 
+    <script src="db.js"></script>
     <script>
-        if (!getCurrentUser()) {
-            window.location.href = 'login.html';
-        }
-        
+        // 1. Ambil data produk berdasarkan ID di URL
+        const params = new URLSearchParams(window.location.search);
+        const pid = params.get('id');
+        const products = getProducts();
+        const product = products.find(p => p.id == pid);
+
+        // 2. Render data produk ke halaman secara dinamis
+        window.onload = () => {
+            if (!getCurrentUser()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (product) {
+                document.getElementById('checkout-name').innerText = product.name;
+                document.getElementById('checkout-img').src = product.image;
+                document.getElementById('checkout-price').innerText = `$${product.price.toFixed(2)}`;
+                
+                // Update Summary di bagian bawah
+                const priceElements = document.querySelectorAll('.text-black.font-bold');
+                priceElements[0].innerText = `$${product.price.toFixed(2)}`; // Product Price
+                
+                const total = product.price + 2.00; // Price + Admin Fee
+                document.querySelector('.text-3xl.font-bold.text-dark-green').innerText = `$${total.toFixed(2)}`;
+            } else {
+                alert("Product not found!");
+                window.location.href = 'home.html';
+            }
+        };
+
+        // 3. Fungsi Bayar (Sekarang benar-benar menyimpan ke database)
         function processPayment() {
-            alert("Payment Successful! Redirecting to your orders...");
-            window.location.href = 'orders.html?tab=ongoing';
+            if (pid) {
+                // Menambahkan order ke localStorage lewat fungsi di db.js
+                addOrder(pid, 'ongoing'); 
+                
+                alert(`Payment Successful! ${product.name} is now in your ongoing orders.`);
+                window.location.href = 'orders.html?tab=ongoing';
+            } else {
+                alert("Error: No product selected.");
+            }
         }
     </script>
 </body>
