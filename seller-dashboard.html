@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - CampusMarket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
+        .text-dark-green { color: #062C1E; }
+        .bg-dark-green { background-color: #062C1E; }
+        .bg-light-green { background-color: #D4E89C; }
+        .bg-cream-card { background-color: #EBEAD2; }
+        
+        /* Simulating Chart Bars */
+        .bar-low { height: 40px; }
+        .bar-mid { height: 80px; }
+        .bar-high { height: 110px; }
+    </style>
+</head>
+<body class="max-w-md mx-auto min-h-screen relative pb-32">
+
+    <header class="p-6">
+        <div class="flex items-center gap-2 italic mb-6">
+            <span class="text-dark-green">🍃</span>
+            <span class="font-bold text-dark-green">CampusMarket</span>
+        </div>
+        
+        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Analytics Overview</p>
+        <div class="flex justify-between items-center">
+            <h1 class="text-4xl font-bold text-dark-green">Seller Dashboard</h1>
+            <span class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-800">📈 +12.5%</span>
+        </div>
+    </header>
+
+    <main class="px-6 space-y-6">
+        
+        <div class="bg-dark-green rounded-[45px] p-8 text-center shadow-xl">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Total Revenue</p>
+            <h2 class="text-5xl font-bold text-white mb-8">$1,240</h2>
+            <button class="w-full bg-[#D4E89C] text-dark-green font-bold py-5 rounded-full flex justify-center items-center gap-2 text-sm hover:opacity-90 transition-all">
+                Withdraw Funds <span class="text-lg">→</span>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-cream-card/40 rounded-[35px] p-6">
+                <div class="bg-white/60 w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-4">🛍️</div>
+                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Orders</p>
+                <p class="text-3xl font-bold text-dark-green">12</p>
+            </div>
+            <div class="bg-cream-card/40 rounded-[35px] p-6">
+                <div class="bg-white/60 w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-4">📦</div>
+                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Products Sold</p>
+                <p class="text-3xl font-bold text-dark-green">14</p>
+            </div>
+        </div>
+
+        <div class="bg-cream-card/30 rounded-[45px] p-8">
+            <div class="flex justify-between items-center mb-10">
+                <h3 class="font-bold text-dark-green">Monthly Performance</h3>
+                <span class="text-[9px] font-bold text-gray-400">Last 30 Days</span>
+            </div>
+            
+            <div class="flex justify-between items-end gap-3 px-4 h-32">
+                <div class="flex-1 bg-white/20 rounded-full bar-low"></div>
+                <div class="flex-1 bg-white/40 rounded-full bar-mid"></div>
+                <div class="flex-1 bg-light-green rounded-full bar-high"></div>
+                <div class="flex-1 bg-white/20 rounded-full bar-mid"></div>
+                <div class="flex-1 bg-white/40 rounded-full bar-low"></div>
+                <div class="flex-1 bg-dark-green rounded-full bar-high"></div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="flex justify-between items-center px-2">
+                <h3 class="font-bold text-dark-green text-lg">Recent Transactions</h3>
+                <button class="text-[10px] font-bold text-gray-400 underline uppercase">See All</button>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-white/50 rounded-[35px] p-4 flex items-center gap-4">
+                    <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=150" class="w-16 h-16 rounded-2xl object-cover">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm text-dark-green">Eco-Ceramic Mug</h4>
+                        <p class="text-[9px] text-gray-400 font-bold uppercase">Order #99281 • 2h ago</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-dark-green">+$28.00</p>
+                        <p class="text-[8px] font-bold text-green-600 uppercase">Completed</p>
+                    </div>
+                </div>
+                <div class="bg-white/50 rounded-[35px] p-4 flex items-center gap-4">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=150" class="w-16 h-16 rounded-2xl object-cover">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm text-dark-green">Recycled Sneakers</h4>
+                        <p class="text-[9px] text-gray-400 font-bold uppercase">Order #99275 • 5h ago</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-dark-green">+$85.50</p>
+                        <p class="text-[8px] font-bold text-green-600 uppercase">Completed</p>
+                    </div>
+                </div>
+                <div class="bg-white/50 rounded-[35px] p-4 flex items-center gap-4 opacity-70">
+                    <div class="w-16 h-16 rounded-2xl bg-gray-200 animate-pulse"></div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm text-dark-green">Bamboo Notebook Set</h4>
+                        <p class="text-[9px] text-gray-400 font-bold uppercase">Order #99264 • Yesterday</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-dark-green">+$14.20</p>
+                        <p class="text-[8px] font-bold text-orange-400 uppercase">Pending</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
+        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400 text-xl">🏠</button>
+        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400 text-xl">💬</button>
+        <button onclick="window.location.href='orders.html'" class="p-4 text-gray-400 text-xl">📋</button>
+        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">＋</button>
+        <button onclick="window.location.href='profile.html'" class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">👤</button>
+    </nav>
+
+</body>
+</html>

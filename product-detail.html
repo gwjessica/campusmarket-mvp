@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail - Silence Pro Wireless</title>
+    <title id="page-title">Detail - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -28,44 +28,41 @@
         </div>
     </header>
 
-    <main class="px-6 pt-24">
+    <main class="px-6 pt-24" id="content-area">
         <div class="relative w-full aspect-square bg-[#1A1A1A] rounded-[40px] overflow-hidden mb-8 shadow-xl">
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800" 
-                 class="w-full h-full object-cover opacity-90" alt="Product">
+            <img id="p-img" src="" class="w-full h-full object-cover opacity-90" alt="Product">
             
             <div class="absolute top-6 left-6 flex gap-2">
-                <span class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-900">LIMITED EDITION</span>
+                <span id="p-tag" class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-900 uppercase">TAG</span>
                 <span class="bg-[#EBEAD2] text-[10px] font-bold px-3 py-1 rounded-full text-gray-700">SUSTAINABLE</span>
             </div>
             
             <div class="absolute bottom-6 w-full text-center">
-                <p class="text-white/50 text-[10px] font-bold tracking-widest uppercase">Silence Pro Wireless</p>
+                <p id="p-subname" class="text-white/50 text-[10px] font-bold tracking-widest uppercase"></p>
             </div>
         </div>
 
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-dark-green mb-2">Silence Pro Wireless</h2>
-            <p class="text-sm text-gray-500 leading-relaxed mb-3">
-                Carbon-neutral noise cancellation with premium sound quality.
-            </p>
+            <h2 id="p-title" class="text-3xl font-bold text-dark-green mb-2"></h2>
+            <p id="p-desc" class="text-sm text-gray-500 leading-relaxed mb-3"></p>
             <p class="text-[10px] font-bold text-gray-400 flex items-center gap-1">
-                📍 Petra Christian University
+                📍 <span id="p-location"></span>
             </p>
         </div>
 
         <div class="bg-[#EBEAD2] rounded-[35px] p-8 mb-8 space-y-3">
             <div class="flex justify-between text-sm font-medium text-gray-500">
                 <span>Product Price</span>
-                <span class="text-black font-bold text-lg">$299.00</span>
+                <span id="p-price" class="text-black font-bold text-lg"></span>
             </div>
             <div class="flex justify-between text-sm font-medium text-gray-500">
                 <span>Impact Admin Fee</span>
-                <span class="text-black font-bold text-lg">$4.50</span>
+                <span id="p-fee" class="text-black font-bold text-lg"></span>
             </div>
             <hr class="border-gray-300 my-2">
             <div class="flex justify-between items-center pt-2">
                 <span class="font-bold text-lg">Total Price</span>
-                <span class="font-bold text-2xl text-dark-green">$303.50</span>
+                <span id="p-total" class="font-bold text-2xl text-dark-green"></span>
             </div>
         </div>
 
@@ -79,7 +76,6 @@
                 <div>
                     <h4 class="font-bold text-xl text-dark-green">Julian Green</h4>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-4">Conscious Curator</p>
-                    
                     <div class="flex gap-6">
                         <div>
                             <p class="font-bold text-lg leading-none">128</p>
@@ -94,39 +90,68 @@
             </div>
             <button class="w-full mt-6 bg-white py-3 rounded-2xl font-bold text-xs shadow-sm">View Gallery</button>
         </div>
-
-        <div class="bg-[#F9F8E6] rounded-[40px] p-8 space-y-6">
-            <h5 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Key Features</h5>
-            <p class="text-xs text-gray-600 leading-relaxed">
-                The Silence Pro Wireless represents the pinnacle of conscious audio engineering. Crafted from 
-                <span class="font-bold text-black">sustainable recycled carbon materials</span>, ini headset keren banget pokoknya.
-            </p>
-            
-            <div class="space-y-4">
-                <div class="flex gap-4 items-start">
-                    <span class="text-lg">⚡</span>
-                    <p class="text-xs text-gray-600"><span class="font-bold text-black">Exceptional 40h battery life</span> for continuous immersion.</p>
-                </div>
-                <div class="flex gap-4 items-start">
-                    <span class="text-lg">🏳️</span>
-                    <p class="text-xs text-gray-600">Designed and engineered in the United Kingdom.</p>
-                </div>
-                <div class="flex gap-4 items-start">
-                    <span class="text-lg">🗓️</span>
-                    <p class="text-xs text-gray-600">Latest <span class="font-bold text-black">2024 release</span> featuring state-of-the-art noise cancellation.</p>
-                </div>
-            </div>
-        </div>
     </main>
 
     <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md p-6 bg-[#FDFCE5]/90 backdrop-blur-md flex gap-4 z-40">
-        <button onclick="window.location.href='chat-detail.html?user=Julian Green&product_id=1'" class="bg-[#D4E89C] p-5 rounded-2xl flex items-center justify-center">
+        <button id="chat-btn" class="bg-[#D4E89C] p-5 rounded-2xl flex items-center justify-center transition-all active:scale-95">
             <span class="text-xl">💬</span>
         </button>
-        <button class="flex-1 bg-dark-green text-white font-bold py-5 rounded-2xl text-sm tracking-widest flex justify-center items-center gap-2">
+        <button id="buy-btn" class="flex-1 bg-dark-green text-white font-bold py-5 rounded-2xl text-sm tracking-widest flex justify-center items-center gap-2 active:scale-95 transition-all">
             BUY NOW
         </button>
     </div>
 
+    <script src="db.js"></script>
+    <script>
+        window.onload = function() {
+            // 1. Ambil ID dari URL (?id=123)
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+
+            // 2. Ambil data dari db.js
+            const products = getProducts();
+            
+            // 3. Cari produk yang ID-nya cocok
+            const product = products.find(p => p.id == productId);
+
+            if (product) {
+                // Update UI dengan data produk
+                document.getElementById('page-title').innerText = `Detail - ${product.name}`;
+                document.getElementById('p-img').src = product.image;
+                document.getElementById('p-img').alt = product.name;
+                document.getElementById('p-tag').innerText = product.tag || "SUSTAINABLE";
+                document.getElementById('p-subname').innerText = product.name;
+                document.getElementById('p-title').innerText = product.name;
+                document.getElementById('p-desc').innerText = product.desc;
+                document.getElementById('p-location').innerText = product.location;
+
+                // Hitung Harga
+                const price = parseFloat(product.price);
+                const fee = price * 0.015; // Contoh fee 1.5%
+                const total = price + fee;
+
+                document.getElementById('p-price').innerText = `$${price.toFixed(2)}`;
+                document.getElementById('p-fee').innerText = `$${fee.toFixed(2)}`;
+                document.getElementById('p-total').innerText = `$${total.toFixed(2)}`;
+
+                // Update Link Tombol
+                document.getElementById('chat-btn').onclick = () => {
+                    window.location.href = `chat-detail.html?user=Julian Green&product_id=${product.id}`;
+                };
+                document.getElementById('buy-btn').onclick = () => {
+                    window.location.href = `checkout.html?id=${product.id}`;
+                };
+
+            } else {
+                // Jika produk tidak ditemukan
+                document.getElementById('content-area').innerHTML = `
+                    <div class="text-center py-20">
+                        <p class="text-gray-400 font-bold">Produk tidak ditemukan.</p>
+                        <button onclick="window.history.back()" class="mt-4 text-dark-green underline font-bold">Kembali</button>
+                    </div>
+                `;
+            }
+        };
+    </script>
 </body>
 </html>
