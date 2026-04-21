@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - CampusMarket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
+        .bg-dark-green { background-color: #062C1E; }
+        .text-dark-green { color: #062C1E; }
+        .bubble-seller { background-color: #D4E89C; color: #062C1E; }
+        .bubble-user { background-color: #062C1E; color: white; }
+    </style>
+</head>
+<body class="max-w-md mx-auto min-h-screen relative pb-44">
+
+    <header class="p-6 flex items-center gap-4 bg-[#FDFCE5] sticky top-0 z-50 border-b border-gray-100">
+        <button onclick="window.history.back()" class="text-xl">←</button>
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150" class="w-10 h-10 rounded-full object-cover">
+        <div class="flex-1">
+            <h4 class="font-bold text-sm" id="chat-user-name">Julian Green</h4>
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Silence Pro Wireless</p>
+        </div>
+        <button class="text-gray-400 text-xl">⋮</button>
+    </header>
+
+    <main class="px-6 pt-6 space-y-6">
+        <div class="text-center">
+            <span class="bg-[#EBEAD2] text-[9px] font-bold px-3 py-1 rounded-full text-gray-500">TODAY, 2:45 PM</span>
+        </div>
+
+        <div class="flex flex-col items-start gap-1 max-w-[80%]">
+            <div class="bubble-seller p-4 rounded-t-3xl rounded-br-3xl text-xs font-medium leading-relaxed">
+                Hi! Yes, the Silence Pro Wireless are still available. I only used them for a few months in the library.
+            </div>
+            <span class="text-[9px] text-gray-400 ml-1">2:46 PM</span>
+        </div>
+
+        <div class="flex flex-col items-end gap-1 ml-auto max-w-[80%]">
+            <div class="bubble-user p-4 rounded-t-3xl rounded-bl-3xl text-xs font-medium leading-relaxed">
+                That's great. Does the noise cancellation work as well as they say? Campus gets pretty loud during finals.
+            </div>
+            <span class="text-[9px] text-gray-400 mr-1">2:48 PM</span>
+        </div>
+
+        <div id="product-card-container" class="hidden">
+            <div class="bg-[#EBEAD2]/50 p-4 rounded-[30px] flex items-center gap-4">
+                <img id="p-img" src="" class="w-16 h-16 rounded-2xl object-cover">
+                <div class="flex-1">
+                    <h5 id="p-name" class="font-bold text-xs text-dark-green">Silence Pro Wireless</h5>
+                    <p id="p-price" class="text-[10px] font-bold text-gray-500">$180.00</p>
+                </div>
+                <button onclick="window.location.href='checkout.html'" class="bg-dark-green text-white text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest">
+                    Buy Now
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-start gap-1 max-w-[80%]">
+            <div class="bubble-seller p-4 rounded-t-3xl rounded-br-3xl text-xs font-medium leading-relaxed">
+                Absolutely. I used them in the student union and couldn't hear a thing. Are you on campus tomorrow for a meetup?
+            </div>
+            <span class="text-[9px] text-gray-400 ml-1">2:50 PM</span>
+        </div>
+    </main>
+
+    <div class="fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white rounded-full p-2 flex items-center shadow-lg border border-gray-100 z-50">
+        <input type="text" placeholder="Type your message..." class="flex-1 px-4 py-2 text-sm focus:outline-none">
+        <button class="bg-dark-green text-white p-3 rounded-full flex items-center justify-center">
+            <span class="rotate-[-45deg] block text-xs">➤</span>
+        </button>
+    </div>
+
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
+        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400 text-xl">🏠</button>
+        <button class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">💬</button>
+        <button class="p-4 text-gray-400 text-xl">📋</button>
+        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">＋</button>
+        <button class="p-4 text-gray-400 text-xl">👤</button>
+    </nav>
+
+    <script src="db.js"></script>
+    <script>
+        // Cek URL params
+        const params = new URLSearchParams(window.location.search);
+        const pid = params.get('product_id');
+        const userName = params.get('user');
+
+        if(userName) document.getElementById('chat-user-name').innerText = userName;
+
+        if(pid) {
+            // Tampilkan card produk jika berasal dari detail barang
+            const products = getProducts();
+            const product = products.find(p => p.id == pid);
+            
+            if(product) {
+                document.getElementById('product-card-container').classList.remove('hidden');
+                document.getElementById('p-name').innerText = product.name;
+                document.getElementById('p-price').innerText = '$' + product.price.toFixed(2);
+                document.getElementById('p-img').src = product.image;
+            }
+        }
+    </script>
+</body>
+</html>

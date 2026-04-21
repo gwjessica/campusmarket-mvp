@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - CampusMarket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
+        .bg-cream-input { background-color: #EBEAD2; }
+        .text-dark-green { color: #062C1E; }
+        .bg-dark-green { background-color: #062C1E; }
+        .active-nav { background-color: #062C1E; color: white; border-radius: 9999px; padding: 10px; }
+        /* Hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="max-w-md mx-auto min-h-screen relative pb-24 overflow-x-hidden">
+
+    <div id="filter-overlay" class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden">
+        <div class="absolute bottom-0 w-full bg-[#FDFCE5] rounded-t-[40px] p-8 animate-slide-up">
+            <div class="flex justify-between items-center mb-8">
+                <button onclick="toggleFilter()"><span class="text-2xl">✕</span></button>
+                <h2 class="text-xl font-bold">Filter</h2>
+                <button class="text-gray-400 font-bold">Reset</button>
+            </div>
+
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Location</h3>
+                    <span class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-800">Primary</span>
+                </div>
+                <div class="bg-white rounded-3xl p-4 flex gap-4 items-start shadow-sm mb-4 relative">
+                    <div class="bg-dark-green p-3 rounded-2xl text-white">📍</div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm">Petra Christian University</h4>
+                        <p class="text-[10px] text-gray-400">Jl. Siwalankerto No.121-131, Surabaya</p>
+                    </div>
+                    <button class="text-gray-400">✏️</button>
+                </div>
+                <div class="w-full h-32 bg-[#D1D0B8] rounded-3xl relative overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                    <div class="w-4 h-4 bg-white border-4 border-black rounded-full z-10"></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="font-bold text-lg mb-4">Area / Campus</h3>
+                <div class="space-y-4">
+                    <div class="bg-[#EBEAD2] p-4 rounded-3xl flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <span class="text-lg">🏢</span>
+                            <span class="text-sm font-bold">Campus Surroundings</span>
+                        </div>
+                        <input type="checkbox" class="w-10 h-5 bg-gray-300 rounded-full appearance-none checked:bg-dark-green relative transition duration-200 cursor-pointer">
+                    </div>
+                    <div class="bg-[#D4E89C] p-4 rounded-3xl flex justify-between items-center border border-dark-green">
+                        <div class="flex items-center gap-3">
+                            <span class="text-lg">🎓</span>
+                            <span class="text-sm font-bold">In-Campus Only</span>
+                        </div>
+                        <div class="w-10 h-6 bg-dark-green rounded-full relative p-1">
+                            <div class="w-4 h-4 bg-white rounded-full ml-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="toggleFilter(); showSearch();" class="w-full bg-dark-green text-white font-bold py-5 rounded-full flex justify-center items-center gap-3">
+                Show Results <span class="bg-gray-700 px-2 py-0.5 rounded text-[10px]">142</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="home-view" class="p-6">
+        <header class="flex justify-between items-center mb-6">
+            <h1 class="text-xl font-bold text-dark-green flex items-center gap-2 italic">
+                🍃 CampusMarket
+            </h1>
+            <button class="text-xl">🔔</button>
+        </header>
+
+        <button onclick="toggleFilter()" class="flex items-center gap-2 bg-[#EBEAD2] px-4 py-2 rounded-full text-[10px] font-bold mb-6">
+            📍 PETRA CHRISTIAN UNIVERSITY <span>▼</span>
+        </button>
+
+        <div class="relative mb-8">
+            <input type="text" onfocus="showSearch()" placeholder="Search eco-conscious goods..." 
+                class="w-full bg-cream-input p-4 pl-12 rounded-full focus:outline-none placeholder-gray-500 text-sm">
+            <span class="absolute left-5 top-4">🔍</span>
+        </div>
+
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold">Browse Categories</h3>
+            <button class="text-[10px] font-bold">See all</button>
+        </div>
+
+        <div class="flex gap-6 mb-10 overflow-x-auto no-scrollbar pb-2">
+            <div class="flex flex-col items-center min-w-[70px]">
+                <div class="w-16 h-16 bg-dark-green rounded-full flex items-center justify-center text-white text-xl">💻</div>
+                <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter">Electronics</span>
+            </div>
+            <div class="flex flex-col items-center min-w-[70px]">
+                <div class="w-16 h-16 bg-[#EBEAD2] rounded-full flex items-center justify-center text-xl">📖</div>
+                <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter text-gray-400">Books</span>
+            </div>
+            <div class="flex flex-col items-center min-w-[70px]">
+                <div class="w-16 h-16 bg-[#EBEAD2] rounded-full flex items-center justify-center text-xl">🛋️</div>
+                <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter text-gray-400">Furniture</span>
+            </div>
+        </div>
+
+        <h3 class="font-bold mb-1">Curated for You</h3>
+        <p class="text-[10px] text-gray-500 mb-6">Eco-conscious tech picked for your profile</p>
+
+        <div id="product-container" class="space-y-6">
+        </div>
+    </div>
+
+    <div id="search-view" class="p-6 hidden">
+        <div class="flex items-center gap-4 mb-6">
+            <button onclick="hideSearch()" class="text-xl">←</button>
+            <div class="relative flex-1">
+                <input type="text" value="Electronics" class="w-full bg-cream-input p-4 pl-12 rounded-full focus:outline-none text-sm font-medium">
+                <span class="absolute left-5 top-4">🔍</span>
+            </div>
+            <button onclick="toggleFilter()" class="text-xl">⊶</button>
+        </div>
+
+        <h3 class="font-bold text-sm mb-4">Recent Searches</h3>
+        <div class="flex flex-wrap gap-2 mb-10">
+            <span class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium">Vintage SLR</span>
+            <span class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium">Mechanical Keyboard</span>
+            <span class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium">Bamboo Chair</span>
+            <span class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium">Linen Tote</span>
+        </div>
+
+        <div class="flex justify-between items-end mb-6">
+            <h2 class="text-2xl font-bold leading-tight text-dark-green">Results for<br>'Electronics'</h2>
+            <span class="text-[10px] text-gray-400 font-bold text-right">124 items<br>found</span>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6">
+            <div class="bg-white rounded-[35px] p-4" onclick="window.location.href='product-detail.html'">
+                <div class="w-full h-72 bg-gray-200 rounded-[25px] mb-4 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500" class="w-full h-full object-cover">
+                    <button class="absolute top-4 right-4 bg-white p-2 rounded-full shadow">❤️</button>
+                </div>
+                <div class="flex justify-between items-start mb-2">
+                    <h4 class="font-bold">Vintage Canon AE-1</h4>
+                    <span class="font-bold">$185</span>
+                </div>
+                <p class="text-[10px] text-gray-400 mb-4">Original 1970s SLR in pristine working condition. Minimal wear, recently serviced.</p>
+                <div class="flex gap-2">
+                    <span class="bg-[#D4E89C] text-[8px] font-bold px-3 py-1 rounded-full">REFURBISHED</span>
+                    <span class="text-[8px] text-gray-300 font-bold self-center">PORTLAND, OR</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/90 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl border border-white/20 z-40">
+        <button onclick="hideSearch()" class="p-3 bg-dark-green text-white rounded-full">🏠</button>
+        <button onclick="window.location.href='messages.html'" class="p-3 text-gray-400">💬</button>
+        <button class="p-3 text-gray-400">📋</button>
+        <button onclick="window.location.href='sell.html'" class="p-3 text-gray-400">➕</button>
+        <button class="p-3 text-gray-400">👤</button>
+    </nav>
+
+    <script src="db.js"></script>
+    <script>
+        function renderProducts() {
+            const products = getProducts();
+            const container = document.getElementById('product-container');
+            container.innerHTML = ''; // Kosongkan dulu
+
+            products.forEach(p => {
+                container.innerHTML += `
+                    <div class="bg-white rounded-[40px] p-4 shadow-sm cursor-pointer active:scale-95 transition-all" 
+                        onclick="window.location.href='product-detail.html?id=${p.id}'">
+                        <div class="w-full h-80 bg-gray-200 rounded-[30px] mb-4 relative overflow-hidden">
+                            <img src="${p.image}" class="w-full h-full object-cover">
+                            <button onclick="event.stopPropagation()" class="absolute top-4 right-4 bg-white p-2 rounded-full shadow">❤️</button>
+                            <span class="absolute bottom-4 left-4 bg-[#D4E89C] text-[8px] font-bold px-3 py-1 rounded-full uppercase">${p.tag}</span>
+                        </div>
+                        <div class="flex justify-between items-center px-2">
+                            <div>
+                                <h4 class="font-bold text-lg">${p.name}</h4>
+                                <p class="text-xs text-gray-400 font-medium">${p.desc}</p>
+                            </div>
+                            <span class="font-bold text-lg">$${p.price}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Jalankan pas halaman kebuka
+        window.onload = renderProducts;
+    </script>
+
+    <script>
+        function toggleFilter() {
+            const overlay = document.getElementById('filter-overlay');
+            overlay.classList.toggle('hidden');
+        }
+
+        function showSearch() {
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('search-view').classList.remove('hidden');
+        }
+
+        function hideSearch() {
+            document.getElementById('search-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
