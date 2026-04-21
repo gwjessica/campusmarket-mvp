@@ -171,6 +171,11 @@
 
     <script src="db.js"></script>
     <script>
+        // proteksi halaman (harus login dulu)
+        if (!getCurrentUser()) {
+            window.location.href = 'login.html';
+        }
+
         function renderProducts() {
             const products = getProducts();
             const container = document.getElementById('product-container');

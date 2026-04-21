@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - CampusMarket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
+        .input-field { background-color: #EBEAD2; border: none; }
+        .btn-primary { background-color: #062C1E; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen items-center justify-center px-8 py-10">
+
+    <div class="text-center mb-8">
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <span class="text-2xl text-[#062C1E]">🍃</span>
+            <h1 class="text-2xl font-bold text-[#062C1E]">CampusMarket</h1>
+        </div>
+        <h2 class="text-4xl font-bold text-gray-900 mb-2">Create Account</h2>
+        <p class="text-gray-600">Start your sustainable campus journey</p>
+    </div>
+
+    <form id="signupForm" class="w-full max-w-sm space-y-5">
+        <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Full Name</label>
+            <input type="text" id="fullname" placeholder="Insert Name" required
+                class="input-field w-full p-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-[#062C1E] transition">
+        </div>
+
+        <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Email address</label>
+            <input type="email" id="email" placeholder="Insert Campus Email" required
+                class="input-field w-full p-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-[#062C1E] transition">
+        </div>
+
+        <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Your Campus</label>
+            <select id="campus" required
+                class="input-field w-full p-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-[#062C1E] transition appearance-none text-gray-600">
+                <option value="" disabled selected>Select your university</option>
+                <option value="Petra Christian University">Petra Christian University</option>
+                <option value="Universitas Airlangga">Universitas Airlangga</option>
+                <option value="ITS Surabaya">ITS Surabaya</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Password</label>
+            <input type="password" id="password" placeholder="••••••••" required
+                class="input-field w-full p-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-[#062C1E] transition">
+        </div>
+
+        <button type="submit" class="btn-primary w-full text-white font-bold py-4 rounded-full flex items-center justify-center gap-2 mt-4 hover:opacity-90 transition shadow-lg">
+            Create Account <span class="text-xl">→</span>
+        </button>
+    </form>
+
+    <p class="mt-8 text-sm text-gray-600">
+        Already have an account? <a href="login.html" class="font-bold text-gray-900">Sign In</a>
+    </p>
+
+    <script src="db.js"></script>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value.toLowerCase();
+            const campus = document.getElementById('campus').value;
+            const password = document.getElementById('password').value;
+
+            // 1. Validasi Domain .ac.id
+            if (!email.endsWith('.ac.id')) {
+                alert("Waduh! Kamu harus pakai email kampus (.ac.id) biar aman.");
+                return;
+            }
+
+            // 2. Cek apakah email sudah terdaftar
+            let users = getUsers();
+            if (users.find(u => u.email === email)) {
+                alert("Email ini sudah terdaftar. Silakan login saja!");
+                return;
+            }
+
+            // 3. Simpan User Baru ke "Database"
+            const newUser = {
+                id: "user_" + Date.now(),
+                name: name,
+                email: email,
+                password: password, // Note: Di real app ini harus di-hash (PHP/Laravel handle ini)
+                avatar: `https://ui-avatars.com/api/?name=${name.replace(' ', '+')}&background=062C1E&color=fff`,
+                univ: campus,
+                joined: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+                sales: 0,
+                loyalty: "New"
+            };
+
+            users.push(newUser);
+            localStorage.setItem('cm_users', JSON.stringify(users));
+
+            // 4. Auto-Login setelah daftar
+            localStorage.setItem('cm_current_session', JSON.stringify(newUser));
+
+            alert("Hore! Akun berhasil dibuat. Selamat datang di CampusMarket!");
+            window.location.href = 'home.html';
+        });
+    </script>
+</body>
+</html>

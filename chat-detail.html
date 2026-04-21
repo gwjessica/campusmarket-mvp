@@ -75,14 +75,18 @@
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
         <button onclick="window.location.href='home.html'" class="p-4 text-gray-400 text-xl">🏠</button>
-        <button class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">💬</button>
-        <button class="p-4 text-gray-400 text-xl">📋</button>
-        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">＋</button>
-        <button class="p-4 text-gray-400 text-xl">👤</button>
+        <button onclick="window.location.href='messages.html'" class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">💬</button>
+        <button onclick="window.location.href='orders.html'" class="p-4 text-gray-400 text-xl">📋</button>
+        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">➕</button>
+        <button onclick="window.location.href='profile.html'" class="p-4 text-gray-400 text-xl">👤</button>
     </nav>
 
     <script src="db.js"></script>
     <script>
+        if (!getCurrentUser()) {
+            window.location.href = 'login.html';
+        }
+        
         // Cek URL params
         const params = new URLSearchParams(window.location.search);
         const pid = params.get('product_id');

@@ -36,7 +36,7 @@
             <span>Joined Sept 2023</span>
         </div>
 
-        <button class="bg-dark-green text-white px-8 py-3 rounded-full text-xs font-bold flex items-center gap-2 mb-10 hover:opacity-90 transition-all">
+        <button onclick="window.location.href='edit-profile.html'" class="bg-dark-green text-white px-8 py-3 rounded-full text-xs font-bold flex items-center gap-2 mb-10 hover:opacity-90 transition-all">
             ✏️ Edit Profile
         </button>
 
@@ -111,7 +111,7 @@
                 <span class="text-gray-300">›</span>
             </div>
 
-            <div onclick="window.location.href='login.html'" class="bg-cream-card/30 rounded-[35px] p-6 flex items-center gap-5 cursor-pointer group">
+            <div onclick="logoutUser()" class="bg-cream-card/30 rounded-[35px] p-6 flex items-center gap-5 cursor-pointer group">
                 <div class="text-xl">🚪</div>
                 <div class="flex-1">
                     <h4 class="font-bold text-sm text-red-600">Logout</h4>
@@ -126,17 +126,29 @@
         <button onclick="window.location.href='home.html'" class="p-4 text-gray-400 text-xl">🏠</button>
         <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400 text-xl">💬</button>
         <button onclick="window.location.href='orders.html'" class="p-4 text-gray-400 text-xl">📋</button>
-        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">＋</button>
+        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">➕</button>
         <button class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">👤</button>
     </nav>
 
     <script src="db.js"></script>
     <script>
+        function logoutUser() {
+            // Menghapus hanya session user, bukan database barang/user
+            localStorage.removeItem('cm_current_session');
+            
+            alert("Berhasil logout!");
+            
+            // Lempar balik ke halaman login
+            window.location.href = 'login.html';
+        }
+
         // Update Listing Count secara dinamis dari db.js
         window.onload = () => {
-            if (typeof getProducts === 'function') {
-                const products = getProducts();
-                document.getElementById('listing-count').innerText = products.length;
+            const user = getCurrentUser();
+            if (user) {
+                document.querySelector('h2.text-3xl').innerText = user.name;
+                document.querySelector('img.w-32').src = user.avatar;
+                document.querySelector('span:first-child').innerText = "📍 " + user.univ;
             }
         };
     </script>

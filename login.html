@@ -9,14 +9,14 @@
     <style>
         body {
             font-family: 'Red Hat Display', sans-serif;
-            background-color: #FDFCE5; /* Warna cream sesuai mockup */
+            background-color: #FDFCE5;
         }
         .input-field {
-            background-color: #EBEAD2; /* Warna input yang agak gelap dari bg */
+            background-color: #EBEAD2;
             border: none;
         }
         .btn-primary {
-            background-color: #062C1E; /* Hijau gelap khas mockup */
+            background-color: #062C1E;
         }
     </style>
 </head>
@@ -34,7 +34,7 @@
     <form id="loginForm" class="w-full max-w-sm space-y-6">
         <div>
             <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Email address</label>
-            <input type="email" id="email" placeholder="julian@conscious.com" required
+            <input type="email" id="email" placeholder="Use Campus Email" required
                 class="input-field w-full p-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-[#062C1E] transition">
         </div>
 
@@ -73,24 +73,39 @@
     </div>
 
     <p class="mt-12 text-sm text-gray-600">
-        Don't have an account? <a href="#" class="font-bold text-gray-900">Create Account</a>
+        Don't have an account? <a href="signup.html" class="font-bold text-gray-900">Create Account</a>
     </p>
 
-    <div class="mt-auto mb-4 w-32 h-1 bg-gray-300 rounded-full opacity-50"></div>
+    <script src="db.js"></script>
 
     <script>
+        // 1. Cek apakah sudah login (Auto-login)
+        window.onload = () => {
+            if (getCurrentUser()) {
+                window.location.href = 'home.html';
+            }
+        };
+
+        // 2. Handle Login Submit
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            
-            // Logika pengecekan domain email .ac.id
-            if (email.toLowerCase().endsWith('.ac.id')) {
-                // Berhasil, pindah ke halaman home
-                window.location.href = 'home.html';
+            const emailInput = document.getElementById('email').value.toLowerCase();
+            const passwordInput = document.getElementById('password').value;
+
+            if (emailInput.endsWith('.ac.id')) {
+                const users = getUsers();
+                // Cari user yang email DAN password-nya cocok
+                const user = users.find(u => u.email.toLowerCase() === emailInput && u.password === passwordInput);
+
+                if (user) {
+                    localStorage.setItem('cm_current_session', JSON.stringify(user));
+                    alert(`Welcome back, ${user.name}!`);
+                    window.location.href = 'home.html';
+                } else {
+                    alert("Email atau Password salah. Silakan coba lagi.");
+                }
             } else {
-                // Gagal
-                alert("Mohon menggunakan email kampus (.ac.id)");
+                alert("Mohon gunakan email kampus (.ac.id)");
             }
         });
     </script>

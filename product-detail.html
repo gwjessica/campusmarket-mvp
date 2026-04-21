@@ -115,6 +115,8 @@
             const product = products.find(p => p.id == productId);
 
             if (product) {
+                const seller = findUserById(product.seller_id);
+
                 // Update UI dengan data produk
                 document.getElementById('page-title').innerText = `Detail - ${product.name}`;
                 document.getElementById('p-img').src = product.image;
@@ -124,6 +126,14 @@
                 document.getElementById('p-title').innerText = product.name;
                 document.getElementById('p-desc').innerText = product.desc;
                 document.getElementById('p-location').innerText = product.location;
+
+                // 3. UPDATE PROFIL PENJUAL (Dinamis!)
+                if (seller) {
+                    // Cari container seller di HTML kamu, kasih ID, lalu update:
+                    document.querySelector('h4.text-xl.text-dark-green').innerText = seller.name;
+                    document.querySelector('img.w-16.h-16.rounded-full').src = seller.avatar;
+                    document.querySelector('p.text-lg.leading-none').innerText = seller.sales; // Update jumlah sales
+                }
 
                 // Hitung Harga
                 const price = parseFloat(product.price);

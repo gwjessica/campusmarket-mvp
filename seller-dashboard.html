@@ -125,5 +125,10 @@
         <button onclick="window.location.href='profile.html'" class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">👤</button>
     </nav>
 
+    <script>
+        if (!getCurrentUser()) {
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
 </html>

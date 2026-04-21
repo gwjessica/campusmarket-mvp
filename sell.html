@@ -92,14 +92,27 @@
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
         <button onclick="window.location.href='home.html'" class="p-4 text-gray-600 text-xl">🏠</button>
-        <button class="p-4 text-gray-600 text-xl">💬</button>
-        <button class="p-4 text-gray-600 text-xl">📋</button>
-        <button class="p-3 bg-dark-green text-white rounded-full text-2xl flex items-center justify-center w-14 h-14">＋</button>
-        <button class="p-4 text-gray-600 text-xl">👤</button>
+        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-600 text-xl">💬</button>
+        <button onclick="window.location.href='orders.html'" class="p-4 text-gray-600 text-xl">📋</button>
+        <button class="p-3 bg-dark-green text-white rounded-full text-2xl flex items-center justify-center w-14 h-14">➕</button>
+        <button onclick="window.location.href='profile.html'" class="p-4 text-gray-600 text-xl">👤</button>
     </nav>
 
     <script src="db.js"></script>
     <script>
+        if (!getCurrentUser()) {
+            window.location.href = 'login.html';
+        }
+        
+        // 1. PROTEKSI HALAMAN: Cek apakah ada user yang login
+        const currentUser = getCurrentUser();
+        
+        if (!currentUser) {
+            // Kalau nggak ada session, lempar balik ke login
+            alert("Waduh, kamu harus login dulu pakai email @ac.id!");
+            window.location.href = 'login.html';
+        }
+
         document.getElementById('sellForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -113,6 +126,8 @@
                 return;
             }
 
+            // Kita siapkan objek produknya
+            // Seller_id tidak perlu ditulis di sini karena sudah dihandle di addProduct (db.js)
             const newProduct = {
                 name: nameValue,
                 price: parseFloat(priceValue),
@@ -120,13 +135,17 @@
                 category: catValue,
                 image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500",
                 tag: "NEW LISTING",
-                location: "Petra Christian University"
+                location: currentUser.univ // Pakai univ si user yang lagi login
             };
 
-            // Panggil fungsi dari db.js
+            // 2. Panggil fungsi addProduct dari db.js
             if (typeof addProduct === "function") {
-                addProduct(newProduct);
-                alert("Success! Your item is now listed.");
+                addProduct(newProduct); 
+                
+                // Log untuk mastiin (bisa dihapus nanti)
+                console.log("Produk diposting oleh:", currentUser.name);
+                
+                alert(`Success! Item kamu sudah terdaftar atas nama ${currentUser.name}`);
                 window.location.href = 'home.html';
             } else {
                 console.error("db.js is not loaded correctly.");
