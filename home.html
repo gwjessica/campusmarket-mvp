@@ -20,8 +20,8 @@
 </head>
 <body class="max-w-md mx-auto min-h-screen relative pb-24 overflow-x-hidden">
 
-    <div id="filter-overlay" class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden">
-        <div class="absolute bottom-0 w-full bg-[#FDFCE5] rounded-t-[40px] p-8 animate-slide-up">
+    <div id="filter-overlay" class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden flex justify-center">
+        <div class="absolute bottom-0 w-full max-w-md bg-[#FDFCE5] rounded-t-[40px] p-8 animate-slide-up">
             <div class="flex justify-between items-center mb-8">
                 <button onclick="toggleFilter()"><i data-lucide="x" class="w-6 h-6"></i></button>
                 <h2 class="text-xl font-bold">Filter</h2>
@@ -41,36 +41,42 @@
                     </div>
                     <button class="text-gray-400"><i data-lucide="pencil" class="w-4 h-4"></i></button>
                 </div>
-                <div class="w-full h-32 bg-[#D1D0B8] rounded-3xl relative overflow-hidden flex items-center justify-center">
-                    <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                    <div class="w-4 h-4 bg-white border-4 border-black rounded-full z-10"></div>
+                
+                <div class="w-full h-32 bg-gray-200 rounded-3xl relative overflow-hidden flex items-center justify-center shadow-inner">
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=600" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Map">
+                    <div class="w-5 h-5 bg-dark-green border-4 border-white rounded-full z-10 shadow-lg"></div>
                 </div>
             </div>
 
             <div class="mb-8">
                 <h3 class="font-bold text-lg mb-4">Area / Campus</h3>
                 <div class="space-y-4">
-                    <div class="bg-[#EBEAD2] p-4 rounded-3xl flex justify-between items-center">
+                    
+                    <div id="opt-all" onclick="setAreaFilter('all')" class="cursor-pointer bg-[#EBEAD2] border border-transparent p-4 rounded-3xl flex justify-between items-center transition-all">
                         <div class="flex items-center gap-3">
-                            <i data-lucide="building-2" class="w-5 h-5"></i>
-                            <span class="text-sm font-bold">Campus Surroundings</span>
+                            <i data-lucide="map" class="w-5 h-5"></i>
+                            <span class="text-sm font-bold">All Areas</span>
                         </div>
-                        <input type="checkbox" class="w-10 h-5 bg-gray-300 rounded-full appearance-none checked:bg-dark-green relative transition duration-200 cursor-pointer">
+                        <div id="toggle-all" class="w-10 h-6 bg-gray-300 rounded-full relative p-1 transition-colors">
+                            <div class="w-4 h-4 bg-white rounded-full transition-transform translate-x-0"></div>
+                        </div>
                     </div>
-                    <div class="bg-[#D4E89C] p-4 rounded-3xl flex justify-between items-center border border-dark-green">
+                    
+                    <div id="opt-campus" onclick="setAreaFilter('campus')" class="cursor-pointer bg-[#D4E89C] border border-dark-green p-4 rounded-3xl flex justify-between items-center transition-all">
                         <div class="flex items-center gap-3">
                             <i data-lucide="graduation-cap" class="w-5 h-5"></i>
                             <span class="text-sm font-bold">In-Campus Only</span>
                         </div>
-                        <div class="w-10 h-6 bg-dark-green rounded-full relative p-1">
-                            <div class="w-4 h-4 bg-white rounded-full ml-auto"></div>
+                        <div id="toggle-campus" class="w-10 h-6 bg-dark-green rounded-full relative p-1 transition-colors">
+                            <div class="w-4 h-4 bg-white rounded-full transition-transform translate-x-4"></div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
-            <button onclick="toggleFilter(); showSearch();" class="w-full bg-dark-green text-white font-bold py-5 rounded-full flex justify-center items-center gap-3">
-                Show Results <span class="bg-gray-700 px-2 py-0.5 rounded text-[10px]">142</span>
+            <button onclick="toggleFilter(); showSearch();" class="w-full bg-dark-green text-white font-bold py-5 rounded-full flex justify-center items-center gap-3 active:scale-95 transition-all">
+                Show Results
             </button>
         </div>
     </div>
@@ -88,7 +94,7 @@
         </button>
 
         <div class="relative mb-8">
-            <input type="text" onfocus="showSearch()" placeholder="Search eco-conscious goods..." 
+            <input type="text" id="homeSearchInput" onfocus="showSearch()" placeholder="Search eco-conscious goods..." 
                 class="w-full bg-cream-input p-4 pl-12 rounded-full focus:outline-none placeholder-gray-500 text-sm">
             <i data-lucide="search" class="absolute left-5 top-4 w-4 h-4 text-gray-500"></i>
         </div>
@@ -124,7 +130,7 @@
         <div class="flex items-center gap-4 mb-6">
             <button onclick="hideSearch()" class="p-2"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
             <div class="relative flex-1">
-                <input type="text" value="Electronics" class="w-full bg-cream-input p-4 pl-12 rounded-full focus:outline-none text-sm font-medium">
+                <input type="text" id="searchInput" oninput="performSearch()" placeholder="Search items..." class="w-full bg-cream-input p-4 pl-12 rounded-full focus:outline-none text-sm font-medium">
                 <i data-lucide="search" class="absolute left-5 top-4 w-4 h-4 text-gray-500"></i>
             </div>
             <button onclick="toggleFilter()" class="p-2"><i data-lucide="sliders-horizontal" class="w-5 h-5"></i></button>
@@ -132,34 +138,18 @@
 
         <h3 class="font-bold text-sm mb-4">Recent Searches</h3>
         <div class="flex flex-wrap gap-2 mb-10">
-            <span class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium">Vintage SLR</span>
-            <span class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium">Mechanical Keyboard</span>
-            <span class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium">Bamboo Chair</span>
-            <span class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium">Linen Tote</span>
+            <span onclick="setSearch('Vintage')" class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium cursor-pointer">Vintage</span>
+            <span onclick="setSearch('Keyboard')" class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium cursor-pointer">Keyboard</span>
+            <span onclick="setSearch('Chair')" class="bg-[#EBEAD2] px-4 py-2 rounded-full text-xs font-medium cursor-pointer">Chair</span>
         </div>
 
         <div class="flex justify-between items-end mb-6">
-            <h2 class="text-2xl font-bold leading-tight text-dark-green">Results for<br>'Electronics'</h2>
-            <span class="text-[10px] text-gray-400 font-bold text-right">124 items<br>found</span>
+            <h2 id="searchTitle" class="text-2xl font-bold leading-tight text-dark-green">Search<br>Products</h2>
+            <span id="searchCount" class="text-[10px] text-gray-400 font-bold text-right">0 items<br>found</span>
         </div>
 
-        <div class="grid grid-cols-1 gap-6">
-            <div class="bg-white rounded-[35px] p-4" onclick="window.location.href='product-detail.html'">
-                <div class="w-full h-72 bg-gray-200 rounded-[25px] mb-4 relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500" class="w-full h-full object-cover">
-                    <button class="absolute top-4 right-4 bg-white p-2 rounded-full shadow"><i data-lucide="heart" class="w-4 h-4"></i></button>
-                </div>
-                <div class="flex justify-between items-start mb-2">
-                    <h4 class="font-bold">Vintage Canon AE-1</h4>
-                    <span class="font-bold">$185</span>
-                </div>
-                <p class="text-[10px] text-gray-400 mb-4">Original 1970s SLR in pristine working condition. Minimal wear, recently serviced.</p>
-                <div class="flex gap-2">
-                    <span class="bg-[#D4E89C] text-[8px] font-bold px-3 py-1 rounded-full">REFURBISHED</span>
-                    <span class="text-[8px] text-gray-300 font-bold self-center">PORTLAND, OR</span>
-                </div>
+        <div id="searchResultsContainer" class="grid grid-cols-1 gap-6">
             </div>
-        </div>
     </div>
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/90 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl border border-white/20 z-40">
@@ -268,14 +258,122 @@
             overlay.classList.toggle('hidden');
         }
 
+        // Fungsi untuk mengganti pilihan filter area
+        function setAreaFilter(selected) {
+            const optAll = document.getElementById('opt-all');
+            const toggleAll = document.getElementById('toggle-all');
+            const handleAll = toggleAll.querySelector('div');
+
+            const optCampus = document.getElementById('opt-campus');
+            const toggleCampus = document.getElementById('toggle-campus');
+            const handleCampus = toggleCampus.querySelector('div');
+
+            if (selected === 'all') {
+                // Nyalakan All Areas
+                optAll.className = "cursor-pointer bg-[#D4E89C] border border-dark-green p-4 rounded-3xl flex justify-between items-center transition-all";
+                toggleAll.className = "w-10 h-6 bg-dark-green rounded-full relative p-1 transition-colors";
+                handleAll.className = "w-4 h-4 bg-white rounded-full transition-transform translate-x-4";
+
+                // Matikan In-Campus
+                optCampus.className = "cursor-pointer bg-[#EBEAD2] border border-transparent p-4 rounded-3xl flex justify-between items-center transition-all";
+                toggleCampus.className = "w-10 h-6 bg-gray-300 rounded-full relative p-1 transition-colors";
+                handleCampus.className = "w-4 h-4 bg-white rounded-full transition-transform translate-x-0";
+            } else {
+                // Matikan All Areas
+                optAll.className = "cursor-pointer bg-[#EBEAD2] border border-transparent p-4 rounded-3xl flex justify-between items-center transition-all";
+                toggleAll.className = "w-10 h-6 bg-gray-300 rounded-full relative p-1 transition-colors";
+                handleAll.className = "w-4 h-4 bg-white rounded-full transition-transform translate-x-0";
+
+                // Nyalakan In-Campus
+                optCampus.className = "cursor-pointer bg-[#D4E89C] border border-dark-green p-4 rounded-3xl flex justify-between items-center transition-all";
+                toggleCampus.className = "w-10 h-6 bg-dark-green rounded-full relative p-1 transition-colors";
+                handleCampus.className = "w-4 h-4 bg-white rounded-full transition-transform translate-x-4";
+            }
+        }
+
         function showSearch() {
             document.getElementById('home-view').classList.add('hidden');
             document.getElementById('search-view').classList.remove('hidden');
         }
 
+        // Fungsi untuk membawa teks dari Home ke Search View
+        function transferSearch() {
+            const homeInput = document.getElementById('homeSearchInput').value;
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.value = homeInput;
+            if (homeInput.length > 0) {
+                showSearch();
+                performSearch(); // Langsung jalankan pencarian
+            }
+        }
+
+        // Fungsi klik badge "Recent Searches"
+        function setSearch(keyword) {
+            document.getElementById('searchInput').value = keyword;
+            performSearch();
+        }
+
+        // Fungsi Utama Pencarian
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const products = getProducts(); // Ambil semua data produk dari db.js
+            
+            // Filter produk berdasarkan nama, deskripsi, atau kategori
+            const filteredProducts = products.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.desc.toLowerCase().includes(query) ||
+                (p.category && p.category.toLowerCase().includes(query))
+            );
+
+            // 1. Update Teks Judul & Jumlah Hasil
+            document.getElementById('searchTitle').innerHTML = query ? `Results for<br>'${query}'` : `Search<br>Products`;
+            document.getElementById('searchCount').innerHTML = `${filteredProducts.length} items<br>found`;
+
+            // 2. Tampilkan ke Container
+            const container = document.getElementById('searchResultsContainer');
+            container.innerHTML = ''; // Bersihkan hasil sebelumnya
+
+            if (filteredProducts.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 text-sm py-10">Oops, no items found for "${query}".</p>`;
+                return;
+            }
+
+            // 3. Render ulang produk yang cocok (mirip fungsi renderProducts)
+            filteredProducts.forEach(p => {
+                const liked = isLiked(p.id);
+                const fillColor = liked ? '#ef4444' : 'none';
+                const strokeColor = liked ? '#ef4444' : 'currentColor';
+                
+                container.innerHTML += `
+                    <div class="bg-white rounded-[35px] p-4 shadow-sm cursor-pointer active:scale-95 transition-all" 
+                        onclick="window.location.href='product-detail.html?id=${p.id}'">
+                        <div class="w-full h-72 bg-gray-200 rounded-[25px] mb-4 relative overflow-hidden">
+                            <img src="${p.image}" class="w-full h-full object-cover">
+                            <button onclick="handleLike(event, ${p.id}); performSearch();" class="absolute top-4 right-4 bg-white p-2 rounded-full shadow z-10">
+                                <i data-lucide="heart" class="w-4 h-4" fill="${fillColor}" stroke="${strokeColor}"></i>
+                            </button>
+                            <span class="absolute bottom-4 left-4 bg-[#D4E89C] text-[8px] font-bold px-3 py-1 rounded-full uppercase">${p.tag}</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold">${p.name}</h4>
+                            <span class="font-bold">$${p.price}</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mb-4">${p.desc}</p>
+                    </div>
+                `;
+            });
+
+            // Wajib panggil ulang agar ikon Lucide ter-render
+            lucide.createIcons();
+        }
+
+        // Sedikit perbaikan untuk hideSearch agar mereset input saat tombol back diklik
         function hideSearch() {
             document.getElementById('search-view').classList.add('hidden');
             document.getElementById('home-view').classList.remove('hidden');
+            document.getElementById('homeSearchInput').value = ''; // Reset teks
+            document.getElementById('searchInput').value = ''; // Reset teks
         }
     </script>
 </body>

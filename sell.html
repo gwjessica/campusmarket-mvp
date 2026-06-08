@@ -31,10 +31,17 @@
             
             <div>
                 <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest ml-1">Product Imagery</label>
-                <div class="mt-2 border-2 border-dashed border-gray-300 rounded-[40px] h-52 flex flex-col items-center justify-center bg-white/20 hover:bg-white/40 transition-all cursor-pointer">
-                    <div class="text-3xl text-gray-400 mb-2">＋</div>
-                    <p class="font-bold text-sm text-gray-800">Upload Photos</p>
-                    <p class="text-[10px] text-gray-400 mt-1">High-quality JPG or PNG up to 10MB</p>
+                <div id="uploadArea" class="mt-2 border-2 border-dashed border-gray-300 rounded-[40px] h-52 flex flex-col items-center justify-center bg-white/20 hover:bg-white/40 transition-all cursor-pointer relative overflow-hidden">
+                    
+                    <input type="file" id="imageInput" accept="image/*" class="hidden">
+                    
+                    <div id="uploadUI" class="flex flex-col items-center pointer-events-none">
+                        <div class="text-3xl text-gray-400 mb-2">＋</div>
+                        <p class="font-bold text-sm text-gray-800">Upload Photos</p>
+                        <p class="text-[10px] text-gray-400 mt-1">Max 2MB</p>
+                    </div>
+
+                    <img id="imagePreview" src="" class="absolute inset-0 w-full h-full object-cover hidden pointer-events-none">
                 </div>
             </div>
 
@@ -101,19 +108,51 @@
 
     <script src="db.js"></script>
     <script>
-        if (!getCurrentUser()) {
-            window.location.href = 'login.html';
-        }
-        
         // 1. PROTEKSI HALAMAN: Cek apakah ada user yang login
         const currentUser = getCurrentUser();
         
         if (!currentUser) {
-            // Kalau nggak ada session, lempar balik ke login
-            alert("Waduh, kamu harus login dulu pakai email @ac.id!");
+            alert("Waduh, kamu harus login dulu!");
             window.location.href = 'login.html';
         }
 
+        // 2. LOGIKA UPLOAD GAMBAR BASE64
+        let uploadedImageBase64 = null; 
+        
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const uploadUI = document.getElementById('uploadUI');
+
+        // Saat area kotak diklik, buka dialog file
+        uploadArea.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        // Saat file dipilih
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Batasi ukuran file jadi 2MB
+                if (file.size > 2 * 1024 * 1024) {
+                    alert("Ukuran gambar terlalu besar! Maksimal 2MB ya.");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    uploadedImageBase64 = event.target.result; // Simpan string Base64
+                    
+                    // Tampilkan preview gambar
+                    imagePreview.src = uploadedImageBase64;
+                    imagePreview.classList.remove('hidden');
+                    uploadUI.classList.add('hidden'); // Sembunyikan tulisan
+                };
+                reader.readAsDataURL(file); 
+            }
+        });
+
+        // 3. LOGIKA SUBMIT FORM (Hanya butuh satu)
         document.getElementById('sellForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -127,25 +166,24 @@
                 return;
             }
 
-            // Kita siapkan objek produknya
-            // Seller_id tidak perlu ditulis di sini karena sudah dihandle di addProduct (db.js)
+            // Validasi gambar
+            if(!uploadedImageBase64) {
+                alert("Please upload a product photo!");
+                return;
+            }
+
             const newProduct = {
                 name: nameValue,
                 price: parseFloat(priceValue),
                 desc: descValue.length > 50 ? descValue.substring(0, 50) + "..." : descValue,
                 category: catValue,
-                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500",
+                image: uploadedImageBase64, 
                 tag: "NEW LISTING",
-                location: currentUser.univ // Pakai univ si user yang lagi login
+                location: currentUser.univ 
             };
 
-            // 2. Panggil fungsi addProduct dari db.js
             if (typeof addProduct === "function") {
                 addProduct(newProduct); 
-                
-                // Log untuk mastiin (bisa dihapus nanti)
-                console.log("Produk diposting oleh:", currentUser.name);
-                
                 alert(`Success! Item kamu sudah terdaftar atas nama ${currentUser.name}`);
                 window.location.href = 'home.html';
             } else {
