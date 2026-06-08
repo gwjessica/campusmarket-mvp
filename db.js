@@ -112,6 +112,9 @@ function initDB() {
     if (!localStorage.getItem('cm_orders')) {
         localStorage.setItem('cm_orders', JSON.stringify(defaultOrders));
     }
+    if (!localStorage.getItem('cm_likes')) {
+        localStorage.setItem('cm_likes', JSON.stringify([]));
+    }
 }
 
 function getUsers() {

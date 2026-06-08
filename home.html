@@ -6,6 +6,7 @@
     <title>Home - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .bg-cream-input { background-color: #EBEAD2; }
@@ -22,7 +23,7 @@
     <div id="filter-overlay" class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden">
         <div class="absolute bottom-0 w-full bg-[#FDFCE5] rounded-t-[40px] p-8 animate-slide-up">
             <div class="flex justify-between items-center mb-8">
-                <button onclick="toggleFilter()"><span class="text-2xl">✕</span></button>
+                <button onclick="toggleFilter()"><i data-lucide="x" class="w-6 h-6"></i></button>
                 <h2 class="text-xl font-bold">Filter</h2>
                 <button class="text-gray-400 font-bold">Reset</button>
             </div>
@@ -33,12 +34,12 @@
                     <span class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-800">Primary</span>
                 </div>
                 <div class="bg-white rounded-3xl p-4 flex gap-4 items-start shadow-sm mb-4 relative">
-                    <div class="bg-dark-green p-3 rounded-2xl text-white">📍</div>
+                    <div class="bg-dark-green p-3 rounded-2xl text-white"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
                     <div class="flex-1">
                         <h4 class="font-bold text-sm">Petra Christian University</h4>
                         <p class="text-[10px] text-gray-400">Jl. Siwalankerto No.121-131, Surabaya</p>
                     </div>
-                    <button class="text-gray-400">✏️</button>
+                    <button class="text-gray-400"><i data-lucide="pencil" class="w-4 h-4"></i></button>
                 </div>
                 <div class="w-full h-32 bg-[#D1D0B8] rounded-3xl relative overflow-hidden flex items-center justify-center">
                     <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
@@ -51,14 +52,14 @@
                 <div class="space-y-4">
                     <div class="bg-[#EBEAD2] p-4 rounded-3xl flex justify-between items-center">
                         <div class="flex items-center gap-3">
-                            <span class="text-lg">🏢</span>
+                            <i data-lucide="building-2" class="w-5 h-5"></i>
                             <span class="text-sm font-bold">Campus Surroundings</span>
                         </div>
                         <input type="checkbox" class="w-10 h-5 bg-gray-300 rounded-full appearance-none checked:bg-dark-green relative transition duration-200 cursor-pointer">
                     </div>
                     <div class="bg-[#D4E89C] p-4 rounded-3xl flex justify-between items-center border border-dark-green">
                         <div class="flex items-center gap-3">
-                            <span class="text-lg">🎓</span>
+                            <i data-lucide="graduation-cap" class="w-5 h-5"></i>
                             <span class="text-sm font-bold">In-Campus Only</span>
                         </div>
                         <div class="w-10 h-6 bg-dark-green rounded-full relative p-1">
@@ -77,19 +78,19 @@
     <div id="home-view" class="p-6">
         <header class="flex justify-between items-center mb-6">
             <h1 class="text-xl font-bold text-dark-green flex items-center gap-2 italic">
-                🍃 CampusMarket
+                <i data-lucide="leaf" class="w-5 h-5"></i> CampusMarket
             </h1>
-            <button class="text-xl">🔔</button>
+            <button class="p-2"><i data-lucide="bell" class="w-5 h-5"></i></button>
         </header>
 
         <button onclick="toggleFilter()" class="flex items-center gap-2 bg-[#EBEAD2] px-4 py-2 rounded-full text-[10px] font-bold mb-6">
-            📍 PETRA CHRISTIAN UNIVERSITY <span>▼</span>
+            <i data-lucide="map-pin" class="w-3 h-3"></i> PETRA CHRISTIAN UNIVERSITY <i data-lucide="chevron-down" class="w-3 h-3"></i>
         </button>
 
         <div class="relative mb-8">
             <input type="text" onfocus="showSearch()" placeholder="Search eco-conscious goods..." 
                 class="w-full bg-cream-input p-4 pl-12 rounded-full focus:outline-none placeholder-gray-500 text-sm">
-            <span class="absolute left-5 top-4">🔍</span>
+            <i data-lucide="search" class="absolute left-5 top-4 w-4 h-4 text-gray-500"></i>
         </div>
 
         <div class="flex justify-between items-center mb-4">
@@ -99,15 +100,15 @@
 
         <div class="flex gap-6 mb-10 overflow-x-auto no-scrollbar pb-2">
             <div class="flex flex-col items-center min-w-[70px]">
-                <div class="w-16 h-16 bg-dark-green rounded-full flex items-center justify-center text-white text-xl">💻</div>
+                <div class="w-16 h-16 bg-dark-green rounded-full flex items-center justify-center text-white"><i data-lucide="laptop" class="w-7 h-7"></i></div>
                 <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter">Electronics</span>
             </div>
             <div class="flex flex-col items-center min-w-[70px]">
-                <div class="w-16 h-16 bg-[#EBEAD2] rounded-full flex items-center justify-center text-xl">📖</div>
+                <div class="w-16 h-16 bg-[#EBEAD2] rounded-full flex items-center justify-center"><i data-lucide="book-open" class="w-7 h-7 text-gray-400"></i></div>
                 <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter text-gray-400">Books</span>
             </div>
             <div class="flex flex-col items-center min-w-[70px]">
-                <div class="w-16 h-16 bg-[#EBEAD2] rounded-full flex items-center justify-center text-xl">🛋️</div>
+                <div class="w-16 h-16 bg-[#EBEAD2] rounded-full flex items-center justify-center"><i data-lucide="armchair" class="w-7 h-7 text-gray-400"></i></div>
                 <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter text-gray-400">Furniture</span>
             </div>
         </div>
@@ -121,12 +122,12 @@
 
     <div id="search-view" class="p-6 hidden">
         <div class="flex items-center gap-4 mb-6">
-            <button onclick="hideSearch()" class="text-xl">←</button>
+            <button onclick="hideSearch()" class="p-2"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
             <div class="relative flex-1">
                 <input type="text" value="Electronics" class="w-full bg-cream-input p-4 pl-12 rounded-full focus:outline-none text-sm font-medium">
-                <span class="absolute left-5 top-4">🔍</span>
+                <i data-lucide="search" class="absolute left-5 top-4 w-4 h-4 text-gray-500"></i>
             </div>
-            <button onclick="toggleFilter()" class="text-xl">⊶</button>
+            <button onclick="toggleFilter()" class="p-2"><i data-lucide="sliders-horizontal" class="w-5 h-5"></i></button>
         </div>
 
         <h3 class="font-bold text-sm mb-4">Recent Searches</h3>
@@ -146,7 +147,7 @@
             <div class="bg-white rounded-[35px] p-4" onclick="window.location.href='product-detail.html'">
                 <div class="w-full h-72 bg-gray-200 rounded-[25px] mb-4 relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500" class="w-full h-full object-cover">
-                    <button class="absolute top-4 right-4 bg-white p-2 rounded-full shadow">❤️</button>
+                    <button class="absolute top-4 right-4 bg-white p-2 rounded-full shadow"><i data-lucide="heart" class="w-4 h-4"></i></button>
                 </div>
                 <div class="flex justify-between items-start mb-2">
                     <h4 class="font-bold">Vintage Canon AE-1</h4>
@@ -162,11 +163,11 @@
     </div>
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/90 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl border border-white/20 z-40">
-        <button onclick="hideSearch()" class="p-3 bg-dark-green text-white rounded-full">🏠</button>
-        <button onclick="window.location.href='messages.html'" class="p-3 text-gray-400">💬</button>
-        <button onclick="window.location.href='orders.html'" class="p-3 text-gray-400">📋</button>
-        <button onclick="window.location.href='sell.html'" class="p-3 text-gray-400">➕</button>
-        <button onclick="window.location.href='profile.html'" class="p-3 text-gray-400">👤</button>
+        <button onclick="hideSearch()" class="p-3 bg-dark-green text-white rounded-full"><i data-lucide="home" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='messages.html'" class="p-3 text-gray-400"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='orders.html'" class="p-3 text-gray-400"><i data-lucide="clipboard-list" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='sell.html'" class="p-3 text-gray-400"><i data-lucide="plus" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='profile.html'" class="p-3 text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></button>
     </nav>
 
     <script src="db.js"></script>
@@ -176,18 +177,46 @@
             window.location.href = 'login.html';
         }
 
+        function handleLike(event, productId) {
+            event.stopPropagation();
+            
+            // 1. Update data di localStorage
+            const liked = toggleLike(productId);
+            
+            // 2. Update UI secara langsung
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            
+            if (liked) {
+                icon.setAttribute('fill', '#ef4444');
+                icon.setAttribute('stroke', '#ef4444');
+            } else {
+                icon.setAttribute('fill', 'none');
+                icon.setAttribute('stroke', 'currentColor');
+            }
+            
+            // Opsional: Jika ingin re-render ikon agar Lucide mendeteksi perubahan
+            lucide.createIcons();
+        }
+
         function renderProducts() {
             const products = getProducts();
             const container = document.getElementById('product-container');
-            container.innerHTML = ''; // Kosongkan dulu
+            container.innerHTML = '';
 
             products.forEach(p => {
+                const liked = isLiked(p.id);
+                const fillColor = liked ? '#ef4444' : 'none';
+                const strokeColor = liked ? '#ef4444' : 'currentColor';
+                
                 container.innerHTML += `
                     <div class="bg-white rounded-[40px] p-4 shadow-sm cursor-pointer active:scale-95 transition-all" 
                         onclick="window.location.href='product-detail.html?id=${p.id}'">
                         <div class="w-full h-80 bg-gray-200 rounded-[30px] mb-4 relative overflow-hidden">
                             <img src="${p.image}" class="w-full h-full object-cover">
-                            <button onclick="event.stopPropagation()" class="absolute top-4 right-4 bg-white p-2 rounded-full shadow">❤️</button>
+                            <button onclick="handleLike(event, ${p.id})" class="absolute top-4 right-4 bg-white p-2 rounded-full shadow">
+                                <i data-lucide="heart" class="w-4 h-4" fill="${fillColor}" stroke="${strokeColor}"></i>
+                            </button>
                             <span class="absolute bottom-4 left-4 bg-[#D4E89C] text-[8px] font-bold px-3 py-1 rounded-full uppercase">${p.tag}</span>
                         </div>
                         <div class="flex justify-between items-center px-2">
@@ -200,13 +229,40 @@
                     </div>
                 `;
             });
+            // Penting: selalu panggil ini setelah inject HTML baru agar ikon muncul
+            lucide.createIcons();
         }
 
-        // Jalankan pas halaman kebuka
+        function getLikes() {
+            return JSON.parse(localStorage.getItem('cm_likes')) || [];
+        }
+
+        function isLiked(productId) {
+            const user = getCurrentUser();
+            if (!user) return false;
+            return getLikes().some(l => l.user_id === user.id && l.product_id === productId);
+        }
+
+        function toggleLike(productId) {
+            const user = getCurrentUser();
+            if (!user) return false;
+            let likes = getLikes();
+            const idx = likes.findIndex(l => l.user_id === user.id && l.product_id === productId);
+            if (idx > -1) {
+                likes.splice(idx, 1);
+            } else {
+                likes.push({ user_id: user.id, product_id: productId });
+            }
+            localStorage.setItem('cm_likes', JSON.stringify(likes));
+            return idx === -1; // true = liked, false = unliked
+        }
+
         window.onload = renderProducts;
     </script>
 
     <script>
+        lucide.createIcons();
+
         function toggleFilter() {
             const overlay = document.getElementById('filter-overlay');
             overlay.classList.toggle('hidden');
