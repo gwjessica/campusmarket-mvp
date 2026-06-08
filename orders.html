@@ -6,6 +6,7 @@
     <title>Orders - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .bg-dark-green { background-color: #062C1E; }
@@ -16,9 +17,9 @@
 <body class="max-w-md mx-auto min-h-screen relative pb-32">
 
     <header class="p-6 flex justify-between items-center bg-[#FDFCE5] sticky top-0 z-50">
-        <button onclick="window.location.href='home.html'" class="text-xl">←</button>
+        <button onclick="window.location.href='home.html'"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
         <h1 class="text-lg font-bold text-dark-green uppercase tracking-widest">Orders</h1>
-        <button class="text-xl">🔍</button>
+        <button><i data-lucide="search" class="w-5 h-5"></i></button>
     </header>
 
     <div class="px-6 mb-8">
@@ -35,13 +36,11 @@
     </main>
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
-        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400 text-xl">🏠</button>
-        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400 text-xl">💬</button>
-        <button class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">
-            <span class="text-xs font-bold text-lg">📋</span>
-        </button>
-        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">➕</button>
-        <button onclick="window.location.href='profile.html'" class="p-4 text-gray-400 text-xl">👤</button>
+        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400"><i data-lucide="home" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+        <button class="p-3 bg-dark-green text-white rounded-full flex items-center justify-center w-14 h-14"><i data-lucide="clipboard-list" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400"><i data-lucide="plus" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='profile.html'" class="p-4 text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></button>
     </nav>
 
     <script src="db.js"></script>
@@ -80,7 +79,7 @@
                                 <span class="bg-[#D4E89C] text-[8px] font-bold px-3 py-1.5 rounded-full text-green-900">PENDING PAYMENT</span>
                             </div>
                             <p class="text-3xl font-bold text-dark-green mb-1">$${product.price.toFixed(2)}</p>
-                            <p class="text-[10px] text-gray-400 font-bold mb-8">📍 ${product.location}</p>
+                            <p class="text-[10px] text-gray-400 font-bold mb-8"><svg xmlns='http://www.w3.org/2000/svg' class='w-3 h-3 inline mr-1' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z'/><circle cx='12' cy='10' r='3'/></svg>${product.location}</p>
                             <div class="space-y-4">
                                 <button onclick="payOrder('${order.id}')" class="w-full bg-dark-green text-white font-bold py-5 rounded-full shadow-lg">Pay Now</button>
                             </div>
@@ -105,7 +104,7 @@
                                 <div class="bg-white/60 p-5 rounded-3xl"><p class="text-[9px] font-bold text-gray-400 uppercase mb-1">Status</p><p class="font-bold text-sm text-green-700">● Ready for Pickup</p></div>
                             </div>
                             <div onclick="completeOrder('${order.id}')" class="bg-dark-green p-2 rounded-full flex items-center relative cursor-pointer group">
-                                <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center text-dark-green shadow-lg z-10">➜</div>
+                                <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center text-dark-green shadow-lg z-10"><svg xmlns='http://www.w3.org/2000/svg' class='w-5 h-5' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M5 12h14'/><path d='m12 5 7 7-7 7'/></svg></div>
                                 <p class="text-white text-[10px] font-bold tracking-widest absolute inset-0 flex items-center justify-center pl-6">CLICK TO COMPLETE</p>
                             </div>
                         </div>
@@ -148,6 +147,8 @@
             document.getElementById('btn-' + tabName).classList.add('tab-active');
             renderOrders(tabName);
         }
+
+        lucide.createIcons();
 
         // Init
         window.onload = () => {

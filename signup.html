@@ -6,6 +6,7 @@
     <title>Sign Up - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .input-field { background-color: #EBEAD2; border: none; }
@@ -16,7 +17,7 @@
 
     <div class="text-center mb-8">
         <div class="flex items-center justify-center gap-2 mb-4">
-            <span class="text-2xl text-[#062C1E]">🍃</span>
+            <i data-lucide="leaf" class="w-6 h-6 text-[#062C1E]"></i>
             <h1 class="text-2xl font-bold text-[#062C1E]">CampusMarket</h1>
         </div>
         <h2 class="text-4xl font-bold text-gray-900 mb-2">Create Account</h2>
@@ -54,7 +55,7 @@
         </div>
 
         <button type="submit" class="btn-primary w-full text-white font-bold py-4 rounded-full flex items-center justify-center gap-2 mt-4 hover:opacity-90 transition shadow-lg">
-            Create Account <span class="text-xl">→</span>
+            Create Account <i data-lucide="arrow-right" class="w-5 h-5"></i>
         </button>
     </form>
 
@@ -109,5 +110,6 @@
             window.location.href = 'home.html';
         });
     </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

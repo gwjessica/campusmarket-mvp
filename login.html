@@ -6,6 +6,7 @@
     <title>Login - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
             font-family: 'Red Hat Display', sans-serif;
@@ -24,7 +25,7 @@
 
     <div class="text-center mb-10">
         <div class="flex items-center justify-center gap-2 mb-4">
-            <span class="text-2xl text-[#062C1E]">🍃</span>
+            <i data-lucide="leaf" class="w-6 h-6 text-[#062C1E]"></i>
             <h1 class="text-2xl font-bold text-[#062C1E]">CampusMarket</h1>
         </div>
         <h2 class="text-4xl font-bold text-gray-900 mb-2">Welcome back</h2>
@@ -45,11 +46,11 @@
             </div>
             <input type="password" id="password" placeholder="••••••••" required
                 class="input-field w-full p-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-[#062C1E] transition">
-            <span class="absolute right-4 bottom-4 text-gray-500 cursor-pointer">👁️</span>
+            <i data-lucide="eye" class="absolute right-4 bottom-4 w-5 h-5 text-gray-500 cursor-pointer"></i>
         </div>
 
         <button type="submit" class="btn-primary w-full text-white font-bold py-4 rounded-full flex items-center justify-center gap-2 mt-4 hover:opacity-90 transition">
-            Sign In <span class="text-xl">→</span>
+            Sign In <i data-lucide="arrow-right" class="w-5 h-5"></i>
         </button>
     </form>
 
@@ -109,5 +110,6 @@
             }
         });
     </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

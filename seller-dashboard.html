@@ -6,6 +6,7 @@
     <title>Seller Dashboard - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .text-dark-green { color: #062C1E; }
@@ -23,14 +24,14 @@
 
     <header class="p-6">
         <div class="flex items-center gap-2 italic mb-6">
-            <span class="text-dark-green">🍃</span>
+            <i data-lucide="leaf" class="w-5 h-5 text-dark-green"></i>
             <span class="font-bold text-dark-green">CampusMarket</span>
         </div>
         
         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Analytics Overview</p>
         <div class="flex justify-between items-center">
             <h1 class="text-4xl font-bold text-dark-green">Seller Dashboard</h1>
-            <span class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-800">📈 +12.5%</span>
+            <span class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-800"><i data-lucide="trending-up" class="w-3 h-3 inline"></i> +12.5%</span>
         </div>
     </header>
 
@@ -46,12 +47,12 @@
 
         <div class="grid grid-cols-2 gap-4">
             <div class="bg-cream-card/40 rounded-[35px] p-6">
-                <div class="bg-white/60 w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-4">🛍️</div>
+                <div class="bg-white/60 w-10 h-10 rounded-xl flex items-center justify-center mb-4"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
                 <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Orders</p>
                 <p class="text-3xl font-bold text-dark-green">12</p>
             </div>
             <div class="bg-cream-card/40 rounded-[35px] p-6">
-                <div class="bg-white/60 w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-4">📦</div>
+                <div class="bg-white/60 w-10 h-10 rounded-xl flex items-center justify-center mb-4"><i data-lucide="package" class="w-5 h-5"></i></div>
                 <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Products Sold</p>
                 <p class="text-3xl font-bold text-dark-green">14</p>
             </div>
@@ -118,14 +119,16 @@
     </main>
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
-        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400 text-xl">🏠</button>
-        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400 text-xl">💬</button>
-        <button onclick="window.location.href='orders.html'" class="p-4 text-gray-400 text-xl">📋</button>
-        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">＋</button>
-        <button onclick="window.location.href='profile.html'" class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">👤</button>
+        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400"><i data-lucide="home" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='orders.html'" class="p-4 text-gray-400"><i data-lucide="clipboard-list" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400"><i data-lucide="plus" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='profile.html'" class="p-3 bg-dark-green text-white rounded-full flex items-center justify-center w-14 h-14"><i data-lucide="user" class="w-5 h-5"></i></button>
     </nav>
 
+    <script src="db.js"></script>
     <script>
+        lucide.createIcons();
         if (!getCurrentUser()) {
             window.location.href = 'login.html';
         }

@@ -6,6 +6,7 @@
     <title>Listing - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .bg-cream-input { background-color: #EBEAD2; }
@@ -17,9 +18,9 @@
 <body class="max-w-md mx-auto min-h-screen relative pb-40">
 
     <header class="p-6 flex justify-between items-center bg-[#FDFCE5] sticky top-0 z-50">
-        <button onclick="window.location.href='home.html'" class="text-xl text-dark-green">←</button>
+        <button onclick="window.location.href='home.html'" class="text-dark-green"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
         <h1 class="text-lg font-bold text-dark-green">Listing</h1>
-        <button onclick="window.location.href='home.html'" class="text-xl text-dark-green">✕</button>
+        <button onclick="window.location.href='home.html'" class="text-dark-green"><i data-lucide="x" class="w-5 h-5"></i></button>
     </header>
 
     <main class="px-8">
@@ -71,7 +72,7 @@
             <div>
                 <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest ml-1">Location</label>
                 <div class="flex items-center gap-3 mt-3 ml-1 text-sm font-medium text-gray-600">
-                    <span class="text-lg">📍</span> Petra Christian University
+                    <i data-lucide="map-pin" class="w-4 h-4"></i> Petra Christian University
                 </div>
             </div>
 
@@ -91,11 +92,11 @@
     </main>
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
-        <button onclick="window.location.href='home.html'" class="p-4 text-gray-600 text-xl">🏠</button>
-        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-600 text-xl">💬</button>
-        <button onclick="window.location.href='orders.html'" class="p-4 text-gray-600 text-xl">📋</button>
-        <button class="p-3 bg-dark-green text-white rounded-full text-2xl flex items-center justify-center w-14 h-14">➕</button>
-        <button onclick="window.location.href='profile.html'" class="p-4 text-gray-600 text-xl">👤</button>
+        <button onclick="window.location.href='home.html'" class="p-4 text-gray-600"><i data-lucide="home" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-600"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='orders.html'" class="p-4 text-gray-600"><i data-lucide="clipboard-list" class="w-5 h-5"></i></button>
+        <button class="p-3 bg-dark-green text-white rounded-full flex items-center justify-center w-14 h-14"><i data-lucide="plus" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='profile.html'" class="p-4 text-gray-600"><i data-lucide="user" class="w-5 h-5"></i></button>
     </nav>
 
     <script src="db.js"></script>
@@ -152,5 +153,6 @@
             }
         });
     </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

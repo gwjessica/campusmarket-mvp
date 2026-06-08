@@ -6,6 +6,7 @@
     <title>Checkout - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .bg-cream-card { background-color: #EBEAD2; }
@@ -17,7 +18,7 @@
 
     <header class="p-8 flex justify-between items-center">
         <h1 class="text-xl font-bold text-dark-green tracking-widest uppercase">Checkout</h1>
-        <span class="text-xl">🛍️</span>
+        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
     </header>
 
     <main class="px-6">
@@ -28,7 +29,7 @@
                  class="w-24 h-24 rounded-2xl object-cover bg-black">
             <div>
                 <h4 class="font-bold text-dark-green text-sm" id="checkout-name">Silence Pro Wireless</h4>
-                <p class="text-[10px] text-gray-400 font-bold mt-1">📍 Petra Christian University</p>
+                <p class="text-[10px] text-gray-400 font-bold mt-1"><i data-lucide="map-pin" class="w-3 h-3 inline"></i> Petra Christian University</p>
                 <p class="font-bold text-dark-green mt-3 text-lg" id="checkout-price">$180.00</p>
             </div>
         </div>
@@ -37,7 +38,7 @@
 
         <div class="bg-cream-card/30 rounded-[40px] p-6 mb-4">
             <div class="flex items-center gap-2 mb-4">
-                <span class="text-lg">🏛️</span>
+                <i data-lucide="landmark" class="w-5 h-5"></i>
                 <span class="text-xs font-bold uppercase tracking-widest">Bank Transfer</span>
             </div>
             <div class="space-y-3">
@@ -54,7 +55,7 @@
 
         <div class="bg-cream-card/30 rounded-[40px] p-6 mb-8">
             <div class="flex items-center gap-2 mb-4">
-                <span class="text-lg">💳</span>
+                <i data-lucide="credit-card" class="w-5 h-5"></i>
                 <span class="text-xs font-bold uppercase tracking-widest">E-Wallets</span>
             </div>
             <div class="flex gap-4">
@@ -97,13 +98,13 @@
     </main>
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
-        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400 text-xl">🏠</button>
-        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400 text-xl">💬</button>
-        <button onclick="alert('You have an unfinished payment!')" class="p-3 bg-dark-green text-white rounded-full text-xl flex items-center justify-center w-14 h-14">
-            <span class="text-xs font-bold">📋</span>
+        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400"><i data-lucide="home" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+        <button onclick="alert('You have an unfinished payment!')" class="p-3 bg-dark-green text-white rounded-full flex items-center justify-center w-14 h-14">
+            <i data-lucide="clipboard-list" class="w-5 h-5"></i>
         </button>
-        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400 text-xl">➕</button>
-        <button onclick="window.location.href='profile.html'" class="p-4 text-gray-400 text-xl">👤</button>
+        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400"><i data-lucide="plus" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='profile.html'" class="p-4 text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></button>
     </nav>
 
     <script src="db.js"></script>
@@ -151,5 +152,6 @@
             }
         }
     </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
