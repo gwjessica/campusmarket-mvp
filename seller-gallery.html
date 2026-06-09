@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Gallery - CampusMarket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
+        .text-dark-green { color: #062C1E; }
+        .bg-dark-green { background-color: #062C1E; }
+    </style>
+</head>
+<body class="max-w-md mx-auto min-h-screen relative pb-10 overflow-x-hidden">
+
+    <header class="p-6 flex justify-between items-center sticky top-0 z-40 bg-[#FDFCE5]/95 backdrop-blur-sm border-b border-gray-200/40">
+        <button onclick="window.history.back()" class="p-2 text-dark-green hover:opacity-70 transition-opacity"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+        <h1 class="text-lg font-bold text-dark-green">Seller Gallery</h1>
+        <div class="w-9"></div> </header>
+
+    <main class="px-6 pt-4 space-y-8">
+        <div class="bg-[#EBEAD2] rounded-[40px] p-6 relative overflow-hidden flex flex-col items-center text-center shadow-sm border border-white/50">
+            <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-sm mb-3">
+                <img id="gallery-avatar" src="" class="w-full h-full object-cover">
+            </div>
+            <h2 id="gallery-name" class="text-2xl font-bold text-dark-green mb-1">...</h2>
+            <div class="flex items-center gap-1 text-yellow-500 mb-2" id="gallery-stars"></div>
+            <p id="gallery-univ" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"><i data-lucide="map-pin" class="w-3 h-3 inline"></i> ...</p>
+        </div>
+
+        <section>
+            <div class="flex justify-between items-end mb-4">
+                <h3 class="font-bold text-dark-green text-sm uppercase tracking-widest pl-1">Available Items</h3>
+                <span id="gallery-count" class="text-[10px] text-gray-400 font-bold bg-[#EBEAD2] px-3 py-1 rounded-full">0 items</span>
+            </div>
+            
+            <div id="gallery-container" class="grid grid-cols-2 gap-4">
+                </div>
+        </section>
+    </main>
+
+    <script src="db.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!getCurrentUser()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const sellerId = params.get('id');
+            const seller = findUserById(sellerId);
+
+            if (!seller) {
+                document.querySelector('main').innerHTML = '<p class="text-center py-20 text-gray-400 font-bold">Seller not found.</p>';
+                return;
+            }
+
+            // 1. Render Profil Seller
+            document.getElementById('gallery-name').innerText = seller.name;
+            document.getElementById('gallery-avatar').src = seller.avatar;
+            
+            const univDetails = getUnivDetails(seller.univ_id);
+            document.getElementById('gallery-univ').innerHTML = `<i data-lucide="map-pin" class="w-3 h-3 inline"></i> ${univDetails ? univDetails.name : 'Unknown Campus'}`;
+
+            // Render Stars
+            const ratingData = getSellerRating(seller.id);
+            const starContainer = document.getElementById('gallery-stars');
+            const avg = Math.round(ratingData.average);
+            for(let i = 1; i <= 5; i++) {
+                const fill = i <= avg ? 'currentColor' : 'none'; 
+                starContainer.innerHTML += `<i data-lucide="star" class="w-4 h-4" fill="${fill}" stroke="currentColor"></i>`;
+            }
+
+            // 2. Render Produk yang Available
+            const allProducts = getProducts();
+            const allOrders = getOrders();
+
+            // Filter: Barang milik seller DAN id produknya TIDAK ADA di tabel orders
+            const availableProducts = allProducts.filter(p => {
+                const isSold = allOrders.some(o => o.product_id === p.id);
+                return p.seller_id === seller.id && !isSold;
+            });
+
+            document.getElementById('gallery-count').innerText = `${availableProducts.length} items`;
+            const container = document.getElementById('gallery-container');
+            
+            if (availableProducts.length === 0) {
+                container.parentElement.innerHTML += `
+                    <div class="py-12 text-center border border-dashed border-gray-300 rounded-[30px] bg-white/50 col-span-2">
+                        <i data-lucide="shopping-bag" class="w-8 h-8 text-gray-300 mx-auto mb-2"></i>
+                        <p class="text-sm text-gray-400 font-bold">This seller has no available items.</p>
+                    </div>`;
+            } else {
+                availableProducts.forEach(p => {
+                    container.innerHTML += `
+                        <div class="bg-white rounded-[25px] p-3 shadow-sm cursor-pointer active:scale-95 transition-all" onclick="window.location.href='product-detail.html?id=${p.id}'">
+                            <div class="w-full h-40 bg-gray-200 rounded-[20px] mb-3 relative overflow-hidden">
+                                <img src="${p.image}" class="w-full h-full object-cover">
+                            </div>
+                            <h4 class="font-bold text-sm text-dark-green truncate">${p.name}</h4>
+                            <span class="font-bold text-sm text-dark-green block mb-1">${formatRupiah(p.price)}</span>
+                            <span class="inline-block bg-[#D4E89C] text-[8px] font-bold px-2 py-0.5 rounded-md uppercase">${p.tag || 'AVAILABLE'}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

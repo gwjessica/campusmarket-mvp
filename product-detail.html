@@ -22,8 +22,9 @@
     <header class="p-6 flex justify-between items-center fixed top-0 w-full max-w-md z-30 bg-[#FDFCE5]/80 backdrop-blur-md">
         <div class="flex items-center gap-3">
             <button onclick="window.history.back()"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+            <img src="logo.png" alt="logo" class="h-6 w-6">
             <h1 class="text-lg font-bold text-dark-green flex items-center gap-1 italic">
-                <i data-lucide="leaf" class="w-4 h-4"></i> Campus Reuse
+                Campus Reuse
             </h1>
         </div>
         <div class="flex gap-4">
@@ -73,26 +74,21 @@
         <div class="bg-[#EBEAD2] rounded-[40px] p-8 mb-8 relative overflow-hidden">
             <div class="flex items-start gap-5">
                 <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200" 
+                    <img id="seller-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200" 
                          class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm">
                     <span class="absolute bottom-0 right-0 bg-[#D4E89C] border-2 border-white text-[8px] rounded-full p-1 leading-none">✅</span>
                 </div>
                 <div>
-                    <h4 class="font-bold text-xl text-dark-green">Julian Green</h4>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-4">Conscious Curator</p>
-                    <div class="flex gap-6">
-                        <div>
-                            <p class="font-bold text-lg leading-none">128</p>
-                            <p class="text-[8px] font-bold text-gray-400 uppercase">Sales</p>
+                    <h4 id="seller-name" class="font-bold text-xl text-dark-green">Julian Green</h4>
+                    
+                    <div class="flex flex-col gap-1">
+                        <div id="seller-stars" class="flex gap-1 text-yellow-400">
                         </div>
-                        <div>
-                            <p class="font-bold text-lg leading-none">2y</p>
-                            <p class="text-[8px] font-bold text-gray-400 uppercase">Loyalty</p>
-                        </div>
+                        <p id="seller-rating-text" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"></p>
                     </div>
                 </div>
             </div>
-            <button class="w-full mt-6 bg-white py-3 rounded-2xl font-bold text-xs shadow-sm">View Gallery</button>
+            <button id="view-gallery-btn" class="w-full mt-6 bg-white py-3 rounded-2xl font-bold text-xs shadow-sm active:scale-95 transition-all text-dark-green">View Gallery</button>
         </div>
     </main>
 
@@ -131,17 +127,38 @@
                 document.getElementById('p-desc').innerText = product.desc;
                 document.getElementById('p-location').innerText = product.location;
 
-                // 3. UPDATE PROFIL PENJUAL (Dinamis!)
+                // 3. UPDATE PROFIL PENJUAL & RATING
                 if (seller) {
-                    // Cari container seller di HTML kamu, kasih ID, lalu update:
-                    document.querySelector('h4.text-xl.text-dark-green').innerText = seller.name;
-                    document.querySelector('img.w-16.h-16.rounded-full').src = seller.avatar;
-                    document.querySelector('p.text-lg.leading-none').innerText = seller.sales; // Update jumlah sales
+                    document.getElementById('seller-name').innerText = seller.name;
+                    document.getElementById('seller-avatar').src = seller.avatar;
+
+                    // Ambil data rating dari db.js
+                    const ratingData = getSellerRating(seller.id);
+                    const starContainer = document.getElementById('seller-stars');
+                    starContainer.innerHTML = '';
+                    
+                    // Render 5 Bintang
+                    const avg = Math.round(ratingData.average);
+                    for(let i = 1; i <= 5; i++) {
+                        const fill = i <= avg ? '#facc15' : 'none'; 
+                        const stroke = i <= avg ? '#facc15' : '#d1d5db'; 
+                        starContainer.innerHTML += `<i data-lucide="star" class="w-4 h-4" fill="${fill}" stroke="${stroke}"></i>`;
+                    }
+                    
+                    // Teks detail rating
+                    document.getElementById('seller-rating-text').innerText = ratingData.count > 0 
+                        ? `${ratingData.average} / 5.0 (${ratingData.count} Reviews)` 
+                        : 'No reviews yet';
+
+                    // Update tombol View Gallery
+                    document.getElementById('view-gallery-btn').onclick = () => {
+                        window.location.href = `seller-gallery.html?id=${seller.id}`;
+                    };
                 }
 
                 // Hitung Harga
                 const price = parseFloat(product.price);
-                const fee = 2500; // Contoh fee 1.5%
+                const fee = 2500; // Contoh fee statis
                 const total = price + fee;
 
                 document.getElementById('p-price').innerText = formatRupiah(price);
@@ -150,7 +167,7 @@
 
                 // Update Link Tombol
                 document.getElementById('chat-btn').onclick = () => {
-                    window.location.href = `chat-detail.html?user=Julian Green&product_id=${product.id}`;
+                    window.location.href = `chat-detail.html?user=${seller ? seller.name : 'Seller'}&product_id=${product.id}`;
                 };
                 document.getElementById('buy-btn').onclick = () => {
                     window.location.href = `checkout.html?id=${product.id}`;
@@ -165,8 +182,10 @@
                     </div>
                 `;
             }
+
+            // PENTING: Panggil Lucide di sini, setelah HTML selesai diubah
+            lucide.createIcons();
         };
     </script>
-    <script>lucide.createIcons();</script>
 </body>
 </html>
