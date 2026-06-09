@@ -103,22 +103,10 @@
 
         <div class="flex justify-between items-center mb-4">
             <h3 class="font-bold">Browse Categories</h3>
-            <button class="text-[10px] font-bold">See all</button>
+            <!-- <button class="text-[10px] font-bold">See all</button> -->
         </div>
 
-        <div class="flex gap-6 mb-10 overflow-x-auto no-scrollbar pb-2">
-            <div class="flex flex-col items-center min-w-[70px]">
-                <div class="w-16 h-16 bg-dark-green rounded-full flex items-center justify-center text-white"><i data-lucide="laptop" class="w-7 h-7"></i></div>
-                <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter">Electronics</span>
-            </div>
-            <div class="flex flex-col items-center min-w-[70px]">
-                <div class="w-16 h-16 bg-[#EBEAD2] rounded-full flex items-center justify-center"><i data-lucide="book-open" class="w-7 h-7 text-gray-400"></i></div>
-                <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter text-gray-400">Books</span>
-            </div>
-            <div class="flex flex-col items-center min-w-[70px]">
-                <div class="w-16 h-16 bg-[#EBEAD2] rounded-full flex items-center justify-center"><i data-lucide="armchair" class="w-7 h-7 text-gray-400"></i></div>
-                <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter text-gray-400">Furniture</span>
-            </div>
+        <div id="category-container" class="flex gap-6 mb-10 overflow-x-auto no-scrollbar pb-2">
         </div>
 
         <h3 class="font-bold mb-1">Curated for You</h3>
@@ -154,8 +142,8 @@
             </div>
     </div>
 
-    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/90 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl border border-white/20 z-40">
-        <button onclick="hideSearch()" class="p-3 bg-dark-green text-white rounded-full"><i data-lucide="home" class="w-5 h-5"></i></button>
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
+        <button onclick="hideSearch()" class="p-3 bg-dark-green text-white rounded-full flex items-center justify-center w-14 h-14"><i data-lucide="home" class="w-5 h-5"></i></button>
         <button onclick="window.location.href='messages.html'" class="p-3 text-gray-400"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
         <button onclick="window.location.href='orders.html'" class="p-3 text-gray-400"><i data-lucide="clipboard-list" class="w-5 h-5"></i></button>
         <button onclick="window.location.href='sell.html'" class="p-3 text-gray-400"><i data-lucide="plus" class="w-5 h-5"></i></button>
@@ -169,13 +157,61 @@
             window.location.href = 'login.html';
         }
 
+        // --- SISTEM KATEGORI DINAMIS ---
+        let activeCategory = null; // Default: tidak ada yang difilter
+
+        // Daftar kategori yang masuk akal untuk kampus
+        const campusCategories = [
+            { id: "Electronics", icon: "laptop" },
+            { id: "Books", icon: "book-open" },
+            { id: "Furniture", icon: "armchair" },
+            { id: "Apparel", icon: "shirt" }, // Pakaian/Thrift
+            { id: "Stationery", icon: "pen-tool" } // Alat gambar/tulis
+        ];
+
+        function renderCategories() {
+            const container = document.getElementById('category-container');
+            container.innerHTML = '';
+
+            campusCategories.forEach(cat => {
+                // Cek apakah kategori ini sedang aktif
+                const isActive = activeCategory === cat.id;
+                
+                // Styling berdasarkan status aktif/tidak
+                const bgCircle = isActive ? 'bg-dark-green' : 'bg-[#EBEAD2]';
+                const iconColor = isActive ? 'text-white' : 'text-gray-400';
+                const textColor = isActive ? 'text-dark-green' : 'text-gray-400';
+
+                container.innerHTML += `
+                    <div class="flex flex-col items-center min-w-[70px] cursor-pointer group" onclick="toggleCategory('${cat.id}')">
+                        <div class="w-16 h-16 ${bgCircle} rounded-full flex items-center justify-center transition-all group-active:scale-95">
+                            <i data-lucide="${cat.icon}" class="w-7 h-7 ${iconColor} transition-colors"></i>
+                        </div>
+                        <span class="text-[10px] font-bold mt-2 uppercase tracking-tighter ${textColor} transition-colors">${cat.id}</span>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function toggleCategory(categoryId) {
+            // Jika yang diklik adalah kategori yang sudah aktif, matikan filternya (jadi null)
+            if (activeCategory === categoryId) {
+                activeCategory = null;
+            } else {
+                // Jika tidak, setel sebagai kategori aktif
+                activeCategory = categoryId;
+            }
+            
+            // Render ulang kategori (untuk ubah warna) dan produk (untuk filter)
+            renderCategories();
+            renderProducts();
+        }
+        // -------------------------------
+
         function handleLike(event, productId) {
             event.stopPropagation();
-            
-            // 1. Update data di localStorage
             const liked = toggleLike(productId);
-            
-            // 2. Update UI secara langsung
             const btn = event.currentTarget;
             const icon = btn.querySelector('i');
             
@@ -186,15 +222,41 @@
                 icon.setAttribute('fill', 'none');
                 icon.setAttribute('stroke', 'currentColor');
             }
-            
-            // Opsional: Jika ingin re-render ikon agar Lucide mendeteksi perubahan
             lucide.createIcons();
         }
 
         function renderProducts() {
-            const products = getProducts();
+            let products = getProducts();
+            
+            // --- LOGIKA FILTER PRODUK ---
+            if (activeCategory) {
+                products = products.filter(p => {
+                    // Karena data default di db.js belum punya 'category', 
+                    // kita berikan fallback sementara berdasarkan namanya agar demo tetap berjalan.
+                    let itemCat = p.category;
+                    if (!itemCat) {
+                        if (p.name.includes("Wireless") || p.name.includes("Canon") || p.name.includes("Tofu65")) itemCat = "Electronics";
+                        else if (p.name.includes("Lamp")) itemCat = "Furniture";
+                        else itemCat = "Others";
+                    }
+                    return itemCat === activeCategory;
+                });
+            }
+            // ----------------------------
+
             const container = document.getElementById('product-container');
             container.innerHTML = '';
+
+            // Jika kosong setelah difilter
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="py-10 text-center border border-dashed border-gray-300 rounded-[30px] bg-white/50">
+                        <i data-lucide="package-open" class="w-8 h-8 text-gray-300 mx-auto mb-2"></i>
+                        <p class="text-sm text-gray-400 font-bold">No items in ${activeCategory}</p>
+                    </div>`;
+                lucide.createIcons();
+                return;
+            }
 
             products.forEach(p => {
                 const liked = isLiked(p.id);
@@ -221,7 +283,6 @@
                     </div>
                 `;
             });
-            // Penting: selalu panggil ini setelah inject HTML baru agar ikon muncul
             lucide.createIcons();
         }
 
@@ -246,10 +307,14 @@
                 likes.push({ user_id: user.id, product_id: productId });
             }
             localStorage.setItem('cm_likes', JSON.stringify(likes));
-            return idx === -1; // true = liked, false = unliked
+            return idx === -1; 
         }
 
-        window.onload = renderProducts;
+        // Panggil kedua fungsi render saat halaman dimuat
+        window.onload = () => {
+            renderCategories();
+            renderProducts();
+        };
     </script>
 
     <script>
