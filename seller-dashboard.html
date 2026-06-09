@@ -11,126 +11,226 @@
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .text-dark-green { color: #062C1E; }
         .bg-dark-green { background-color: #062C1E; }
-        .bg-light-green { background-color: #D4E89C; }
         .bg-cream-card { background-color: #EBEAD2; }
-        
-        /* Simulating Chart Bars */
-        .bar-low { height: 40px; }
-        .bar-mid { height: 80px; }
-        .bar-high { height: 110px; }
     </style>
 </head>
-<body class="max-w-md mx-auto min-h-screen relative pb-32">
+<body class="max-w-md mx-auto min-h-screen relative pb-10 overflow-x-hidden">
 
-    <header class="p-6">
-        <div class="flex items-center gap-2 italic mb-6">
-            <i data-lucide="leaf" class="w-5 h-5 text-dark-green"></i>
-            <span class="font-bold text-dark-green">CampusMarket</span>
-        </div>
+    <header class="p-6 flex justify-between items-center bg-[#FDFCE5] sticky top-0 z-50 border-b border-[#EBEAD2]">
+        <button onclick="window.location.href='profile.html'" class="p-2 bg-[#EBEAD2] rounded-full text-dark-green hover:opacity-80"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+        <h1 class="text-lg font-bold text-dark-green flex items-center gap-2">
+            <i data-lucide="store" class="w-5 h-5"></i> Seller Hub
+        </h1>
+        <div class="w-9"></div> </header>
+
+    <main class="px-6 pt-4 space-y-8">
         
-        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Analytics Overview</p>
-        <div class="flex justify-between items-center">
-            <h1 class="text-4xl font-bold text-dark-green">Seller Dashboard</h1>
-            <span class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-800"><i data-lucide="trending-up" class="w-3 h-3 inline"></i> +12.5%</span>
-        </div>
-    </header>
-
-    <main class="px-6 space-y-6">
-        
-        <div class="bg-dark-green rounded-[45px] p-8 text-center shadow-xl">
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Total Revenue</p>
-            <h2 class="text-5xl font-bold text-white mb-8">$1,240</h2>
-            <button class="w-full bg-[#D4E89C] text-dark-green font-bold py-5 rounded-full flex justify-center items-center gap-2 text-sm hover:opacity-90 transition-all">
-                Withdraw Funds <span class="text-lg">→</span>
-            </button>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-            <div class="bg-cream-card/40 rounded-[35px] p-6">
-                <div class="bg-white/60 w-10 h-10 rounded-xl flex items-center justify-center mb-4"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
-                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Orders</p>
-                <p class="text-3xl font-bold text-dark-green">12</p>
-            </div>
-            <div class="bg-cream-card/40 rounded-[35px] p-6">
-                <div class="bg-white/60 w-10 h-10 rounded-xl flex items-center justify-center mb-4"><i data-lucide="package" class="w-5 h-5"></i></div>
-                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Products Sold</p>
-                <p class="text-3xl font-bold text-dark-green">14</p>
-            </div>
-        </div>
-
-        <div class="bg-cream-card/30 rounded-[45px] p-8">
-            <div class="flex justify-between items-center mb-10">
-                <h3 class="font-bold text-dark-green">Monthly Performance</h3>
-                <span class="text-[9px] font-bold text-gray-400">Last 30 Days</span>
-            </div>
-            
-            <div class="flex justify-between items-end gap-3 px-4 h-32">
-                <div class="flex-1 bg-white/20 rounded-full bar-low"></div>
-                <div class="flex-1 bg-white/40 rounded-full bar-mid"></div>
-                <div class="flex-1 bg-light-green rounded-full bar-high"></div>
-                <div class="flex-1 bg-white/20 rounded-full bar-mid"></div>
-                <div class="flex-1 bg-white/40 rounded-full bar-low"></div>
-                <div class="flex-1 bg-dark-green rounded-full bar-high"></div>
-            </div>
-        </div>
-
-        <div class="space-y-4">
-            <div class="flex justify-between items-center px-2">
-                <h3 class="font-bold text-dark-green text-lg">Recent Transactions</h3>
-                <button class="text-[10px] font-bold text-gray-400 underline uppercase">See All</button>
-            </div>
-
-            <div class="space-y-3">
-                <div class="bg-white/50 rounded-[35px] p-4 flex items-center gap-4">
-                    <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=150" class="w-16 h-16 rounded-2xl object-cover">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-sm text-dark-green">Eco-Ceramic Mug</h4>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase">Order #99281 • 2h ago</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-bold text-dark-green">+$28.00</p>
-                        <p class="text-[8px] font-bold text-green-600 uppercase">Completed</p>
-                    </div>
+        <section>
+            <h3 class="font-bold text-dark-green text-sm uppercase tracking-widest mb-3 pl-1">Overview</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2 w-full bg-dark-green rounded-[35px] p-6 text-white shadow-xl relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 opacity-10"><i data-lucide="wallet" class="w-32 h-32"></i></div>
+                    <p class="text-[10px] text-gray-300 font-bold uppercase tracking-widest mb-1">Total Earnings</p>
+                    <h2 class="text-4xl font-bold mb-1" id="metric-earnings">$0.00</h2>
+                    <p class="text-xs text-[#D4E89C] font-medium"><i data-lucide="trending-up" class="w-3 h-3 inline"></i> Lifetime</p>
                 </div>
-                <div class="bg-white/50 rounded-[35px] p-4 flex items-center gap-4">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=150" class="w-16 h-16 rounded-2xl object-cover">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-sm text-dark-green">Recycled Sneakers</h4>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase">Order #99275 • 5h ago</p>
+                <div class="bg-[#D4E89C] rounded-[30px] p-5 shadow-sm border border-[#C5D88D]">
+                    <div class="bg-white/40 w-8 h-8 rounded-full flex items-center justify-center mb-3">
+                        <i data-lucide="package" class="w-4 h-4 text-green-800"></i>
                     </div>
-                    <div class="text-right">
-                        <p class="font-bold text-dark-green">+$85.50</p>
-                        <p class="text-[8px] font-bold text-green-600 uppercase">Completed</p>
-                    </div>
+                    <h4 class="text-2xl font-bold text-green-900" id="metric-orders">0</h4>
+                    <p class="text-[10px] font-bold text-green-800 uppercase tracking-wider">Active Orders</p>
                 </div>
-                <div class="bg-white/50 rounded-[35px] p-4 flex items-center gap-4 opacity-70">
-                    <div class="w-16 h-16 rounded-2xl bg-gray-200 animate-pulse"></div>
-                    <div class="flex-1">
-                        <h4 class="font-bold text-sm text-dark-green">Bamboo Notebook Set</h4>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase">Order #99264 • Yesterday</p>
+                <div class="bg-cream-card rounded-[30px] p-5 shadow-sm">
+                    <div class="bg-white/40 w-8 h-8 rounded-full flex items-center justify-center mb-3">
+                        <i data-lucide="tags" class="w-4 h-4 text-gray-700"></i>
                     </div>
-                    <div class="text-right">
-                        <p class="font-bold text-dark-green">+$14.20</p>
-                        <p class="text-[8px] font-bold text-orange-400 uppercase">Pending</p>
-                    </div>
+                    <h4 class="text-2xl font-bold text-dark-green" id="metric-listings">0</h4>
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Live Listings</p>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section>
+            <div class="flex justify-between items-center mb-3 pl-1">
+                <h3 class="font-bold text-dark-green text-sm uppercase tracking-widest flex items-center gap-2">
+                    Action Needed <span id="badge-action" class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                </h3>
+            </div>
+            <div id="action-container" class="space-y-4">
+                </div>
+        </section>
+
+        <section>
+            <div class="flex justify-between items-center mb-3 pl-1">
+                <h3 class="font-bold text-dark-green text-sm uppercase tracking-widest">Active Listings</h3>
+                <button onclick="window.location.href='sell.html'" class="text-[10px] font-bold text-dark-green bg-[#D4E89C] px-3 py-1 rounded-full">+ New</button>
+            </div>
+            <div id="listings-container" class="space-y-4">
+                </div>
+        </section>
+
+        <section>
+            <h3 class="font-bold text-dark-green text-sm uppercase tracking-widest mb-3 pl-1">Sales History</h3>
+            <div id="history-container" class="space-y-4">
+                </div>
+        </section>
+
     </main>
-
-    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
-        <button onclick="window.location.href='home.html'" class="p-4 text-gray-400"><i data-lucide="home" class="w-5 h-5"></i></button>
-        <button onclick="window.location.href='messages.html'" class="p-4 text-gray-400"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
-        <button onclick="window.location.href='orders.html'" class="p-4 text-gray-400"><i data-lucide="clipboard-list" class="w-5 h-5"></i></button>
-        <button onclick="window.location.href='sell.html'" class="p-4 text-gray-400"><i data-lucide="plus" class="w-5 h-5"></i></button>
-        <button onclick="window.location.href='profile.html'" class="p-3 bg-dark-green text-white rounded-full flex items-center justify-center w-14 h-14"><i data-lucide="user" class="w-5 h-5"></i></button>
-    </nav>
 
     <script src="db.js"></script>
     <script>
-        lucide.createIcons();
-        if (!getCurrentUser()) {
-            window.location.href = 'login.html';
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            renderDashboard(currentUser);
+        });
+
+        function renderDashboard(currentUser) {
+            const allProducts = getProducts();
+            const allOrders = getOrders();
+
+            // Filter Data
+            const myProducts = allProducts.filter(p => p.seller_id === currentUser.id);
+            const mySales = allOrders.filter(order => myProducts.some(p => p.id === order.product_id));
+
+            let totalEarnings = 0;
+            const activeOrders = [];
+            const historyOrders = [];
+
+            // Pisahkan order yang sudah selesai dan yang belum
+            mySales.forEach(order => {
+                if (order.status === 'collected') {
+                    const product = myProducts.find(p => p.id === order.product_id);
+                    totalEarnings += product.price;
+                    historyOrders.push(order);
+                } else {
+                    activeOrders.push(order);
+                }
+            });
+
+            // --- 1. UPDATE METRICS ---
+            document.getElementById('metric-earnings').innerText = `$${totalEarnings.toFixed(2)}`;
+            document.getElementById('metric-orders').innerText = activeOrders.length;
+            document.getElementById('metric-listings').innerText = myProducts.length;
+
+            const badgeAction = document.getElementById('badge-action');
+            if (activeOrders.length > 0) {
+                badgeAction.innerText = activeOrders.length;
+                badgeAction.classList.remove('hidden');
+            } else {
+                badgeAction.classList.add('hidden');
+            }
+
+            // --- 2. RENDER ACTION NEEDED ---
+            const actionContainer = document.getElementById('action-container');
+            actionContainer.innerHTML = '';
+            if (activeOrders.length === 0) {
+                actionContainer.innerHTML = `<div class="p-5 text-center text-xs text-gray-400 font-medium bg-cream-card/30 rounded-3xl border border-dashed border-gray-300">You're all caught up! No pending orders.</div>`;
+            } else {
+                activeOrders.forEach(order => {
+                    const product = myProducts.find(p => p.id === order.product_id);
+                    actionContainer.innerHTML += `
+                        <div class="bg-orange-50 rounded-[30px] p-4 border border-orange-200">
+                            <div class="flex gap-4 items-center mb-3">
+                                <img src="${product.image}" class="w-14 h-14 rounded-xl object-cover">
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-sm text-dark-green leading-tight">${product.name}</h4>
+                                    <p class="text-[10px] text-gray-500 font-bold mt-1">Order ${order.order_no} • Awaiting Handover</p>
+                                </div>
+                            </div>
+                            <button onclick="markAsCompleted('${order.id}')" class="w-full bg-dark-green text-white text-xs font-bold py-3 rounded-2xl active:scale-95 transition-all">Mark as Completed</button>
+                        </div>
+                    `;
+                });
+            }
+
+            // --- 3. RENDER ACTIVE LISTINGS ---
+            const listingsContainer = document.getElementById('listings-container');
+            listingsContainer.innerHTML = '';
+            if (myProducts.length === 0) {
+                listingsContainer.innerHTML = `<div class="p-5 text-center text-xs text-gray-400 font-medium bg-cream-card/30 rounded-3xl border border-dashed border-gray-300">No active items. Start selling!</div>`;
+            } else {
+                myProducts.forEach(product => {
+                    listingsContainer.innerHTML += `
+                        <div class="bg-white rounded-[30px] p-4 shadow-sm border border-gray-100 flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="flex gap-3 items-center">
+                                    <img src="${product.image}" class="w-12 h-12 rounded-xl object-cover">
+                                    <div>
+                                        <h4 class="font-bold text-sm text-dark-green max-w-[150px] truncate">${product.name}</h4>
+                                        <span class="font-bold text-dark-green">$${product.price}</span>
+                                    </div>
+                                </div>
+                                <span class="text-[8px] bg-[#D4E89C] px-2 py-1 rounded-md font-bold">LIVE</span>
+                            </div>
+                            <div class="flex gap-2 border-t border-gray-100 pt-3">
+                                <button onclick="shareProduct('${product.name}')" class="flex-1 flex justify-center items-center gap-1 bg-[#EBEAD2] text-dark-green text-[10px] font-bold py-2 rounded-xl active:bg-gray-200"><i data-lucide="share-2" class="w-3 h-3"></i> Share</button>
+                                <button onclick="editProduct(${product.id})" class="flex-1 flex justify-center items-center gap-1 bg-[#EBEAD2] text-dark-green text-[10px] font-bold py-2 rounded-xl active:bg-gray-200"><i data-lucide="pencil" class="w-3 h-3"></i> Edit</button>
+                                <button onclick="deleteListing(${product.id})" class="w-10 flex justify-center items-center bg-red-50 text-red-600 rounded-xl active:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // --- 4. RENDER SALES HISTORY ---
+            const historyContainer = document.getElementById('history-container');
+            historyContainer.innerHTML = '';
+            if (historyOrders.length === 0) {
+                historyContainer.innerHTML = `<div class="p-5 text-center text-xs text-gray-400 font-medium bg-cream-card/30 rounded-3xl border border-dashed border-gray-300">No completed sales yet.</div>`;
+            } else {
+                historyOrders.forEach(order => {
+                    const product = myProducts.find(p => p.id === order.product_id);
+                    historyContainer.innerHTML += `
+                        <div class="bg-white rounded-[25px] p-4 shadow-sm flex gap-4 items-center border border-gray-100">
+                            <img src="${product.image}" class="w-12 h-12 rounded-xl object-cover grayscale opacity-80">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-sm text-dark-green truncate max-w-[150px]">${product.name}</h4>
+                                <p class="text-[10px] text-gray-400 font-medium">${order.date}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-sm text-dark-green">+$${product.price}</p>
+                                <p class="text-[8px] text-green-600 font-bold"><i data-lucide="check" class="w-2 h-2 inline"></i> DONE</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            lucide.createIcons();
+        }
+
+        // --- FUNGSI AKSI ---
+
+        function markAsCompleted(orderId) {
+            if(confirm("Apakah barang sudah diserahkan ke pembeli?")) {
+                if (typeof updateOrderStatus === 'function') {
+                    updateOrderStatus(orderId, 'collected');
+                    renderDashboard(getCurrentUser()); // Re-render layar
+                }
+            }
+        }
+
+        function shareProduct(productName) {
+            alert(`Link copied! Ready to share: "Check out my ${productName} on CampusMarket!"`);
+        }
+
+        function editProduct(productId) {
+            alert(`Fitur edit untuk ID ${productId} akan diarahkan ke halaman form edit.`);
+            // Nanti bisa window.location.href = `edit-product.html?id=${productId}`;
+        }
+
+        function deleteListing(productId) {
+            if(confirm("Yakin ingin menghapus produk ini dari toko kamu?")) {
+                let products = getProducts();
+                products = products.filter(p => p.id !== productId);
+                localStorage.setItem('cm_products', JSON.stringify(products));
+                renderDashboard(getCurrentUser()); // Re-render layar
+            }
         }
     </script>
 </body>

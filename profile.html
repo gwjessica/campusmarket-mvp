@@ -7,8 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .text-dark-green { color: #062C1E; }
@@ -60,7 +58,7 @@
             </div>
         </div>
 
-        <div class="w-full bg-cream-card/50 rounded-[45px] p-8 mb-10 relative">
+        <!-- <div class="w-full bg-cream-card/50 rounded-[45px] p-8 mb-10 relative">
             <div class="flex justify-between items-start mb-4">
                 <div class="bg-white p-3 rounded-2xl shadow-sm"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
                 <span class="text-4xl font-bold text-dark-green" id="listing-count">5</span>
@@ -74,19 +72,19 @@
                 <img src="https://images.unsplash.com/photo-1587829741301-dc798b83bac1?w=100" class="w-10 h-10 rounded-full border-2 border-white object-cover">
                 <div class="w-10 h-10 rounded-full border-2 border-white bg-[#D1D0B8] flex items-center justify-center text-[10px] font-bold text-gray-600">+2</div>
             </div>
-        </div>
+        </div> -->
 
         <div class="w-full space-y-4 mb-10 text-left">
             <h3 class="font-bold text-dark-green mb-4 ml-2">Account Settings</h3>
             
-            <div class="bg-cream-card/30 rounded-[35px] p-6 flex items-center gap-5 cursor-pointer hover:bg-cream-card/50 transition-all">
+            <!-- <div onclick="window.location.href='sales-history.html'" class="bg-cream-card/30 rounded-[35px] p-6 flex items-center gap-5 cursor-pointer hover:bg-cream-card/50 transition-all">
                 <div><i data-lucide="trending-up" class="w-5 h-5"></i></div>
                 <div class="flex-1">
                     <h4 class="font-bold text-sm">Sales History</h4>
-                    <p class="text-[10px] text-gray-400 font-bold">12 successful transactions <span class="text-green-600 bg-green-100 px-1 rounded"><i data-lucide="trending-up" class="w-3 h-3 inline"></i> 15%</span></p>
+                    <p class="text-[10px] text-gray-400 font-bold">See your past sales</p>
                 </div>
                 <span class="text-gray-300">›</span>
-            </div>
+            </div> -->
 
             <div class="bg-cream-card/30 rounded-[35px] p-6 flex items-center gap-5 cursor-pointer">
                 <div><i data-lucide="bell" class="w-5 h-5"></i></div>
@@ -137,46 +135,56 @@
     <script src="db.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
+            // 1. RENDER ICON DULUAN: Taruh di paling atas supaya apapun yang terjadi, UI icon tetap aman
+            lucide.createIcons();
+
             const user = getCurrentUser();
             
             if (user) {
-                // Update Data User
-                document.querySelector('h2.text-3xl').innerText = user.name;
-                document.querySelector('img.object-cover').src = user.avatar; // Sesuaikan selector
-                document.querySelector('.text-\\[10px\\].font-bold.text-gray-400 span:first-child').innerText = '📍 ' + user.univ;
-                
-                // Hitung Listing (Opsional: ambil dari localStorage)
-                const products = getProducts();
-                const myProducts = products.filter(p => p.seller_id === user.id);
-                document.getElementById('listing-count').innerText = myProducts.length;
+                try {
+                    // Update Data User Text & Avatar
+                    document.querySelector('h2.text-3xl').innerText = user.name;
+                    
+                    const avatarImg = document.querySelector('img.object-cover');
+                    if (avatarImg) avatarImg.src = user.avatar; 
+                    
+                    // Ambil detail kampus berdasarkan univ_id
+                    const userUniv = getUnivDetails(user.univ_id);
+                    const univName = userUniv ? userUniv.name : user.univ || "Petra Christian University";
+                    
+                    // Cara lebih aman mencari elemen info (tanpa pakai kurung siku di querySelector)
+                    const infoContainer = document.querySelector('div.tracking-widest.mb-6');
+                    if (infoContainer) {
+                        const spans = infoContainer.querySelectorAll('span');
+                        if (spans.length >= 3) {
+                            spans[0].innerText = '📍 ' + univName;
+                            spans[2].innerText = 'Joined ' + (user.joined || "Recently");
+                        }
+                    }
+                    
+                    // Hitung jumlah listing produk aktif milik user
+                    const products = getProducts();
+                    const myProducts = products.filter(p => p.seller_id === user.id);
+                    const listingCountEl = document.getElementById('listing-count');
+                    if (listingCountEl) {
+                        listingCountEl.innerText = myProducts.length;
+                    }
+
+                } catch (error) {
+                    console.error("Ada masalah saat memuat data profil:", error);
+                }
             } else {
                 // Jika tidak login, arahkan ke login
                 window.location.href = 'login.html';
             }
-
-            // Pastikan ikon Lucide di-render setelah semua elemen siap
-            lucide.createIcons();
         });
+
         function logoutUser() {
             // Menghapus hanya session user, bukan database barang/user
             localStorage.removeItem('cm_current_session');
-            
             alert("Berhasil logout!");
-            
-            // Lempar balik ke halaman login
             window.location.href = 'login.html';
         }
-
-        // Update Listing Count secara dinamis dari db.js
-        // window.onload = () => {
-        //     const user = getCurrentUser();
-        //     if (user) {
-        //         document.querySelector('h2.text-3xl').innerText = user.name;
-        //         document.querySelector('img.w-32').src = user.avatar;
-        //         document.querySelector('span:first-child').innerText = user.univ;
-        //     }
-        //     lucide.createIcons();
-        // };
     </script>
 </body>
 </html>

@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         body { font-family: 'Red Hat Display', sans-serif; background-color: #FDFCE5; }
         .bg-cream-input { background-color: #EBEAD2; }
@@ -33,19 +35,19 @@
                     <h3 class="font-bold text-lg">Location</h3>
                     <span class="bg-[#D4E89C] text-[10px] font-bold px-3 py-1 rounded-full text-green-800">Primary</span>
                 </div>
-                <div class="bg-white rounded-3xl p-4 flex gap-4 items-start shadow-sm mb-4 relative">
+                
+                <div class="bg-white rounded-3xl p-4 flex gap-4 items-center shadow-sm mb-4 relative cursor-pointer">
                     <div class="bg-dark-green p-3 rounded-2xl text-white"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
-                    <div class="flex-1">
-                        <h4 class="font-bold text-sm">Petra Christian University</h4>
-                        <p class="text-[10px] text-gray-400">Jl. Siwalankerto No.121-131, Surabaya</p>
+                    <div class="flex-1 w-full">
+                        <select id="univSelect" onchange="changeMapLocation()" class="w-full bg-transparent font-bold text-sm focus:outline-none cursor-pointer appearance-none">
+                            </select>
+                        <p id="univAddress" class="text-[10px] text-gray-400 mt-1 truncate w-[200px]"></p>
                     </div>
-                    <button class="text-gray-400"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none"></i>
                 </div>
                 
-                <div class="w-full h-32 bg-gray-200 rounded-3xl relative overflow-hidden flex items-center justify-center shadow-inner">
-                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=600" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Map">
-                    <div class="w-5 h-5 bg-dark-green border-4 border-white rounded-full z-10 shadow-lg"></div>
-                </div>
+                <div id="map" class="w-full h-40 bg-gray-200 rounded-3xl relative overflow-hidden flex items-center justify-center shadow-inner z-10">
+                    </div>
             </div>
 
             <div class="mb-8">
@@ -374,6 +376,78 @@
             document.getElementById('home-view').classList.remove('hidden');
             document.getElementById('homeSearchInput').value = ''; // Reset teks
             document.getElementById('searchInput').value = ''; // Reset teks
+        }
+    </script>
+    <script>
+        let map; // Variabel global untuk nyimpan peta
+        let marker; // Variabel global untuk nyimpan pin
+
+        function initMap() {
+            // Ambil data Univ dari db.js
+            const univs = getUniversities();
+            const selectEl = document.getElementById('univSelect');
+            
+            // Isi dropdown dengan opsi kampus
+            univs.forEach(u => {
+                let option = document.createElement('option');
+                option.value = u.id;
+                option.text = u.name;
+                selectEl.appendChild(option);
+            });
+
+            // Set ke Univ user saat ini (default: Petra)
+            const currentUser = getCurrentUser();
+            let activeUniv = getUnivDetails(currentUser ? currentUser.univ_id : 'univ_1');
+            
+            if(!activeUniv) activeUniv = univs[0]; // Fallback
+            
+            selectEl.value = activeUniv.id;
+            document.getElementById('univAddress').innerText = activeUniv.address;
+
+            // Inisialisasi Peta (Hanya dieksekusi sekali)
+            if (!map) {
+                map = L.map('map').setView([activeUniv.lat, activeUniv.lng], 15);
+                
+                // Pake tile layer dari OpenStreetMap (Gratis, gaya mirip GMaps)
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+
+                // Tambahkan Pin Marker
+                marker = L.marker([activeUniv.lat, activeUniv.lng]).addTo(map)
+                    .bindPopup(`<b>${activeUniv.name}</b><br>${activeUniv.address}`).openPopup();
+            }
+        }
+
+        // Fungsi dipanggil saat opsi Dropdown Kampus diubah
+        function changeMapLocation() {
+            const selectedId = document.getElementById('univSelect').value;
+            const univDetails = getUnivDetails(selectedId);
+
+            if(univDetails && map && marker) {
+                // Update teks alamat
+                document.getElementById('univAddress').innerText = univDetails.address;
+                
+                // Geser peta & marker perlahan ke lokasi baru
+                map.flyTo([univDetails.lat, univDetails.lng], 16);
+                marker.setLatLng([univDetails.lat, univDetails.lng]);
+                marker.bindPopup(`<b>${univDetails.name}</b><br>${univDetails.address}`).openPopup();
+            }
+        }
+
+        // Modifikasi fungsi toggleFilter untuk memanggil initMap saat dibuka (menghindari bug map blank/abu-abu di Leaflet)
+        function toggleFilter() {
+            const overlay = document.getElementById('filter-overlay');
+            overlay.classList.toggle('hidden');
+            
+            if (!overlay.classList.contains('hidden')) {
+                // Delay sebentar biar DOM siap nge-render ukuran wadah Peta
+                setTimeout(() => {
+                    initMap();
+                    map.invalidateSize(); 
+                }, 100);
+            }
         }
     </script>
 </body>
