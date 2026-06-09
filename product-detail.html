@@ -141,9 +141,9 @@
                 const fee = price * 0.015; // Contoh fee 1.5%
                 const total = price + fee;
 
-                document.getElementById('p-price').innerText = `$${price.toFixed(2)}`;
-                document.getElementById('p-fee').innerText = `$${fee.toFixed(2)}`;
-                document.getElementById('p-total').innerText = `$${total.toFixed(2)}`;
+                document.getElementById('p-price').innerText = formatRupiah(price);
+                document.getElementById('p-fee').innerText = formatRupiah(Math.round(fee));
+                document.getElementById('p-total').innerText = formatRupiah(Math.round(total));
 
                 // Update Link Tombol
                 document.getElementById('chat-btn').onclick = () => {

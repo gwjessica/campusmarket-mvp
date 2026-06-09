@@ -103,7 +103,7 @@
             if(product) {
                 document.getElementById('product-card-container').classList.remove('hidden');
                 document.getElementById('p-name').innerText = product.name;
-                document.getElementById('p-price').innerText = '$' + product.price.toFixed(2);
+                document.getElementById('p-price').innerText = formatRupiah(product.price);
                 document.getElementById('p-img').src = product.image;
             }
         }

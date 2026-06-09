@@ -30,7 +30,7 @@
             <div>
                 <h4 class="font-bold text-dark-green text-sm" id="checkout-name">Silence Pro Wireless</h4>
                 <p class="text-[10px] text-gray-400 font-bold mt-1"><i data-lucide="map-pin" class="w-3 h-3 inline"></i> Petra Christian University</p>
-                <p class="font-bold text-dark-green mt-3 text-lg" id="checkout-price">$180.00</p>
+                <p class="font-bold text-dark-green mt-3 text-lg" id="checkout-price">Rp 850,000</p>
             </div>
         </div>
 
@@ -78,17 +78,17 @@
             <div class="space-y-3 mb-6">
                 <div class="flex justify-between text-gray-500 text-sm font-medium">
                     <span>Product Price</span>
-                    <span class="text-black font-bold">$180.00</span>
+                    <span class="text-black font-bold">Rp 850,000</span>
                 </div>
                 <div class="flex justify-between text-gray-500 text-sm font-medium">
                     <span>Admin Fee</span>
-                    <span class="text-black font-bold">$2.00</span>
+                    <span class="text-black font-bold">Rp 2,000</span>
                 </div>
             </div>
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Payment</p>
-                    <p class="text-3xl font-bold text-dark-green">$182.00</p>
+                    <p class="text-3xl font-bold text-dark-green">Rp 852,000</p>
                 </div>
                 <button onclick="processPayment()" class="bg-dark-green text-white px-10 py-4 rounded-full font-bold shadow-xl active:scale-95 transition-all">
                     Pay Now
@@ -125,14 +125,15 @@
             if (product) {
                 document.getElementById('checkout-name').innerText = product.name;
                 document.getElementById('checkout-img').src = product.image;
-                document.getElementById('checkout-price').innerText = `$${product.price.toFixed(2)}`;
+                document.getElementById('checkout-price').innerText = formatRupiah(product.price);
                 
                 // Update Summary di bagian bawah
                 const priceElements = document.querySelectorAll('.text-black.font-bold');
-                priceElements[0].innerText = `$${product.price.toFixed(2)}`; // Product Price
+                priceElements[0].innerText = formatRupiah(product.price);
                 
-                const total = product.price + 2.00; // Price + Admin Fee
-                document.querySelector('.text-3xl.font-bold.text-dark-green').innerText = `$${total.toFixed(2)}`;
+                const adminFee = 2000;
+                const total = product.price + adminFee;
+                document.querySelector('.text-3xl.font-bold.text-dark-green').innerText = formatRupiah(total);
             } else {
                 alert("Product not found!");
                 window.location.href = 'home.html';

@@ -71,10 +71,10 @@ const defaultUsers = [
 
 // 3. DATA DEFAULT ITEMS
 const defaultProducts = [
-    { id: 1, seller_id: "user_1", name: "Silence Pro Wireless", price: 299, desc: "Carbon-neutral noise cancellation with premium sound quality.", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", tag: "SUSTAINABLE TECH" },
-    { id: 2, seller_id: "user_2", name: "Vintage Canon AE-1", price: 185, desc: "Original 1970s SLR in pristine working condition. Minimal wear.", image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500", tag: "REFURBISHED" },
-    { id: 3, seller_id: "user_1", name: "Architect Brass Lamp", price: 92, desc: "Brushed brass finish with articulated arm. Energy-efficient LED conversion.", image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=500", tag: "PRE-OWNED" },
-    { id: 4, seller_id: "user_2", name: "Tofu65 Custom Build", price: 145, desc: "Lubed Gateron Yellow switches, walnut case, PBT keycaps. Exceptional tactile feel.", image: "https://images.unsplash.com/photo-1595225476474-87563907a212?w=500", tag: "CUSTOM" }
+    { id: 1, seller_id: "user_1", name: "Silence Pro Wireless", price: 850000, desc: "Carbon-neutral noise cancellation with premium sound quality.", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", tag: "SUSTAINABLE TECH" },
+    { id: 2, seller_id: "user_2", name: "Vintage Canon AE-1", price: 1200000, desc: "Original 1970s SLR in pristine working condition. Minimal wear.", image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500", tag: "REFURBISHED" },
+    { id: 3, seller_id: "user_1", name: "Architect Brass Lamp", price: 450000, desc: "Brushed brass finish with articulated arm. Energy-efficient LED conversion.", image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=500", tag: "PRE-OWNED" },
+    { id: 4, seller_id: "user_2", name: "Tofu65 Custom Build", price: 975000, desc: "Lubed Gateron Yellow switches, walnut case, PBT keycaps. Exceptional tactile feel.", image: "https://images.unsplash.com/photo-1595225476474-87563907a212?w=500", tag: "CUSTOM" }
 ];
 
 const defaultOrders = [];
@@ -154,6 +154,10 @@ function updateOrderStatus(orderId, newStatus) {
     let orders = getOrders();
     orders = orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o);
     localStorage.setItem('cm_orders', JSON.stringify(orders));
+}
+
+function formatRupiah(amount) {
+    return 'Rp ' + Number(amount).toLocaleString('id-ID');
 }
 
 initDB();

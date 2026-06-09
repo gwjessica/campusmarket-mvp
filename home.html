@@ -77,7 +77,7 @@
                 </div>
             </div>
 
-            <button onclick="toggleFilter(); showSearch();" class="w-full bg-dark-green text-white font-bold py-5 rounded-full flex justify-center items-center gap-3 active:scale-95 transition-all">
+            <button onclick="applyLocationFilter()" class="w-full bg-dark-green text-white font-bold py-5 rounded-full flex justify-center items-center gap-3 active:scale-95 transition-all">
                 Show Results
             </button>
         </div>
@@ -135,6 +135,7 @@
 
         <div class="flex justify-between items-end mb-6">
             <h2 id="searchTitle" class="text-2xl font-bold leading-tight text-dark-green">Search<br>Products</h2>
+            <p id="searchLocationText" class="text-[10px] text-gray-500 font-bold mt-1 uppercase tracking-widest hidden"></p>
             <span id="searchCount" class="text-[10px] text-gray-400 font-bold text-right">0 items<br>found</span>
         </div>
 
@@ -153,12 +154,16 @@
     <script src="db.js"></script>
     <script>
         // proteksi halaman (harus login dulu)
+        // proteksi halaman (harus login dulu)
         if (!getCurrentUser()) {
             window.location.href = 'login.html';
         }
 
         // --- SISTEM KATEGORI DINAMIS ---
-        let activeCategory = null; // Default: tidak ada yang difilter
+        let activeCategory = null; 
+        
+        // --- SISTEM FILTER LOKASI ---
+        let activeAreaFilter = 'campus'; // Defaultnya In-Campus Only
 
         // Daftar kategori yang masuk akal untuk kampus
         const campusCategories = [
@@ -278,7 +283,7 @@
                                 <h4 class="font-bold text-lg">${p.name}</h4>
                                 <p class="text-xs text-gray-400 font-medium">${p.desc}</p>
                             </div>
-                            <span class="font-bold text-lg">$${p.price}</span>
+                            <span class="font-bold text-lg">${formatRupiah(p.price)}</span>
                         </div>
                     </div>
                 `;
@@ -327,6 +332,8 @@
 
         // Fungsi untuk mengganti pilihan filter area
         function setAreaFilter(selected) {
+            activeAreaFilter = selected; // Update state
+
             const optAll = document.getElementById('opt-all');
             const toggleAll = document.getElementById('toggle-all');
             const handleAll = toggleAll.querySelector('div');
@@ -363,6 +370,19 @@
             document.getElementById('search-view').classList.remove('hidden');
         }
 
+        function applyLocationFilter() {
+            toggleFilter(); 
+            showSearch();   
+            
+            document.getElementById('searchInput').value = ""; 
+            
+            const selectedUnivId = document.getElementById('univSelect').value;
+            // PERBAIKAN: Gunakan selectedUnivId, bukan selectedId
+            const univDetails = getUnivDetails(selectedUnivId); 
+            
+            performSearch(univDetails ? univDetails.name : "Selected Location");
+        }
+
         // Fungsi untuk membawa teks dari Home ke Search View
         function transferSearch() {
             const homeInput = document.getElementById('homeSearchInput').value;
@@ -371,7 +391,7 @@
             searchInput.value = homeInput;
             if (homeInput.length > 0) {
                 showSearch();
-                performSearch(); // Langsung jalankan pencarian
+                performSearch(); 
             }
         }
 
@@ -382,31 +402,61 @@
         }
 
         // Fungsi Utama Pencarian
-        function performSearch() {
+        function performSearch(forcedLocationName = null) {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const products = getProducts(); // Ambil semua data produk dari db.js
+            let products = getProducts(); 
+            const allUsers = getUsers();
             
-            // Filter produk berdasarkan nama, deskripsi, atau kategori
+            // --- LOGIKA FILTER LOKASI ---
+            const selectedUnivId = document.getElementById('univSelect').value;
+            
+            if (activeAreaFilter === 'campus') {
+                // Filter barang hanya dari kampus yang dipilih
+                products = products.filter(p => {
+                    const seller = allUsers.find(u => u.id === p.seller_id);
+                    return seller && seller.univ_id === selectedUnivId;
+                });
+            }
+            // Jika activeAreaFilter === 'all', lewati filter di atas (tampilkan semua)
+
+            // --- LOGIKA FILTER PENCARIAN TEKS & KATEGORI ---
             const filteredProducts = products.filter(p => 
                 p.name.toLowerCase().includes(query) || 
                 p.desc.toLowerCase().includes(query) ||
                 (p.category && p.category.toLowerCase().includes(query))
             );
 
-            // 1. Update Teks Judul & Jumlah Hasil
-            document.getElementById('searchTitle').innerHTML = query ? `Results for<br>'${query}'` : `Search<br>Products`;
+            // --- UPDATE TEXT & LOCATION ---
+            const searchTitle = document.getElementById('searchTitle');
+            const locText = document.getElementById('searchLocationText');
+            
+            if (query) {
+                searchTitle.innerHTML = `Results for<br>'${query}'`;
+            } else {
+                searchTitle.innerHTML = `All<br>Products`;
+            }
+
+            // Atur teks lokasi di bawah judul berdasarkan status filter Area
+            if (forcedLocationName) {
+                locText.innerHTML = activeAreaFilter === 'campus' 
+                    ? `IN ${forcedLocationName}` 
+                    : `IN ALL SURABAYA AREAS`;
+                locText.classList.remove('hidden');
+            } else {
+                locText.classList.add('hidden');
+            }
+            
             document.getElementById('searchCount').innerHTML = `${filteredProducts.length} items<br>found`;
 
-            // 2. Tampilkan ke Container
+            // --- RENDER KE CONTAINER ---
             const container = document.getElementById('searchResultsContainer');
-            container.innerHTML = ''; // Bersihkan hasil sebelumnya
+            container.innerHTML = ''; 
 
             if (filteredProducts.length === 0) {
-                container.innerHTML = `<p class="text-center text-gray-400 text-sm py-10">Oops, no items found for "${query}".</p>`;
+                container.innerHTML = `<p class="text-center text-gray-400 text-sm py-10">Oops, no items found.</p>`;
                 return;
             }
 
-            // 3. Render ulang produk yang cocok (mirip fungsi renderProducts)
             filteredProducts.forEach(p => {
                 const liked = isLiked(p.id);
                 const fillColor = liked ? '#ef4444' : 'none';
@@ -417,7 +467,7 @@
                         onclick="window.location.href='product-detail.html?id=${p.id}'">
                         <div class="w-full h-72 bg-gray-200 rounded-[25px] mb-4 relative overflow-hidden">
                             <img src="${p.image}" class="w-full h-full object-cover">
-                            <button onclick="handleLike(event, ${p.id}); performSearch();" class="absolute top-4 right-4 bg-white p-2 rounded-full shadow z-10">
+                            <button onclick="handleLike(event, ${p.id}); performSearch('${forcedLocationName}');" class="absolute top-4 right-4 bg-white p-2 rounded-full shadow z-10">
                                 <i data-lucide="heart" class="w-4 h-4" fill="${fillColor}" stroke="${strokeColor}"></i>
                             </button>
                             <span class="absolute bottom-4 left-4 bg-[#D4E89C] text-[8px] font-bold px-3 py-1 rounded-full uppercase">${p.tag}</span>
@@ -431,7 +481,6 @@
                 `;
             });
 
-            // Wajib panggil ulang agar ikon Lucide ter-render
             lucide.createIcons();
         }
 
@@ -448,9 +497,11 @@
         let marker; // Variabel global untuk nyimpan pin
 
         function initMap() {
-            // Ambil data Univ dari db.js
             const univs = getUniversities();
             const selectEl = document.getElementById('univSelect');
+            
+            // KOSONGKAN DULU agar tidak kedobel saat fungsi ini dipanggil berkali-kali
+            selectEl.innerHTML = '';
             
             // Isi dropdown dengan opsi kampus
             univs.forEach(u => {
@@ -460,26 +511,21 @@
                 selectEl.appendChild(option);
             });
 
-            // Set ke Univ user saat ini (default: Petra)
             const currentUser = getCurrentUser();
             let activeUniv = getUnivDetails(currentUser ? currentUser.univ_id : 'univ_1');
             
-            if(!activeUniv) activeUniv = univs[0]; // Fallback
+            if(!activeUniv) activeUniv = univs[0]; 
             
             selectEl.value = activeUniv.id;
             document.getElementById('univAddress').innerText = activeUniv.address;
 
-            // Inisialisasi Peta (Hanya dieksekusi sekali)
             if (!map) {
                 map = L.map('map').setView([activeUniv.lat, activeUniv.lng], 15);
-                
-                // Pake tile layer dari OpenStreetMap (Gratis, gaya mirip GMaps)
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '© OpenStreetMap'
                 }).addTo(map);
 
-                // Tambahkan Pin Marker
                 marker = L.marker([activeUniv.lat, activeUniv.lng]).addTo(map)
                     .bindPopup(`<b>${activeUniv.name}</b><br>${activeUniv.address}`).openPopup();
             }
