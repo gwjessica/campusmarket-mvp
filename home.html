@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - CampusMarket</title>
+    <title>Campus Reuse - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -82,9 +82,12 @@
 
     <div id="home-view" class="p-6">
         <header class="flex justify-between items-center mb-6">
-            <h1 class="text-xl font-bold text-dark-green flex items-center gap-2 italic">
-                <i data-lucide="leaf" class="w-5 h-5"></i> CampusMarket
-            </h1>
+            <div class="flex items-center gap-2">
+                <img src="logo.png" alt="logo" class="w-6 h-6">
+                <h1 class="text-xl font-bold text-dark-green flex items-center gap-2 italic">
+                    Campus Reuse
+                </h1>
+            </div>
             <button class="p-2"><i data-lucide="bell" class="w-5 h-5"></i></button>
         </header>
 
@@ -112,10 +115,10 @@
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
         <button class="p-3 bg-dark-green text-white rounded-full flex items-center justify-center w-14 h-14"><i data-lucide="home" class="w-5 h-5"></i></button>
-        <button onclick="window.location.href='messages.html'" class="p-3 text-gray-400"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
-        <button onclick="window.location.href='orders.html'" class="p-3 text-gray-400"><i data-lucide="clipboard-list" class="w-5 h-5"></i></button>
-        <button onclick="window.location.href='sell.html'" class="p-3 text-gray-400"><i data-lucide="plus" class="w-5 h-5"></i></button>
-        <button onclick="window.location.href='profile.html'" class="p-3 text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='messages.html'" class="p-3 text-gray-600"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='orders.html'" class="p-3 text-gray-600"><i data-lucide="clipboard-list" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='sell.html'" class="p-3 text-gray-600"><i data-lucide="plus" class="w-5 h-5"></i></button>
+        <button onclick="window.location.href='profile.html'" class="p-3 text-gray-600"><i data-lucide="user" class="w-5 h-5"></i></button>
     </nav>
 
     <script src="db.js"></script>
