@@ -193,6 +193,7 @@
             const params = new URLSearchParams(window.location.search);
             const activeTab = params.get('tab') || 'topay';
             switchTab(activeTab);
+            lucide.createIcons();
         };
     </script>
 </body>

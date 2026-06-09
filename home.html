@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Reuse - Home</title>
+    <title>Home - CampusMarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -16,9 +16,6 @@
         .bg-dark-green { background-color: #062C1E; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .body, html {
-            scrollbar-width: none;
-        }
     </style>
 </head>
 <body class="max-w-md mx-auto min-h-screen relative pb-24 overflow-x-hidden">
@@ -82,12 +79,9 @@
 
     <div id="home-view" class="p-6">
         <header class="flex justify-between items-center mb-6">
-            <div class="flex items-center gap-2">
-                <img src="logo.png" alt="logo" class="w-6 h-6">
-                <h1 class="text-xl font-bold text-dark-green flex items-center gap-2 italic">
-                    Campus Reuse
-                </h1>
-            </div>
+            <h1 class="text-xl font-bold text-dark-green flex items-center gap-2 italic">
+                <i data-lucide="leaf" class="w-5 h-5"></i> CampusMarket
+            </h1>
             <button class="p-2"><i data-lucide="bell" class="w-5 h-5"></i></button>
         </header>
 
@@ -181,7 +175,12 @@
 
         function renderProducts() {
             let products = getProducts();
+            const allOrders = getOrders(); 
             
+            // --- FILTER: SEMBUNYIKAN BARANG YANG SUDAH SOLD / DIORDER ---
+            products = products.filter(p => !allOrders.some(o => o.product_id === p.id));
+            
+            // --- FILTER KATEGORI ---
             if (activeCategory) {
                 products = products.filter(p => {
                     let itemCat = p.category;
@@ -201,7 +200,7 @@
                 container.innerHTML = `
                     <div class="py-10 text-center border border-dashed border-gray-300 rounded-[30px] bg-white/50">
                         <i data-lucide="package-open" class="w-8 h-8 text-gray-300 mx-auto mb-2"></i>
-                        <p class="text-sm text-gray-400 font-bold">No items found</p>
+                        <p class="text-sm text-gray-400 font-bold">No items available</p>
                     </div>`;
                 lucide.createIcons();
                 return;
@@ -219,16 +218,14 @@
                             <button onclick="handleLike(event, ${p.id})" class="absolute top-4 right-4 bg-white p-2 rounded-full shadow">
                                 <i data-lucide="heart" class="w-4 h-4" fill="${fillColor}" stroke="${strokeColor}"></i>
                             </button>
-                            <span class="absolute bottom-4 left-4 bg-[#D4E89C] text-[8px] font-bold px-3 py-1 rounded-full uppercase">${p.tag}</span>
+                            <span class="absolute bottom-4 left-4 bg-[#D4E89C] text-[8px] font-bold px-3 py-1 rounded-full uppercase">${p.tag || 'AVAILABLE'}</span>
                         </div>
-                        
-                        <div class="flex flex-col justify-center px-2">
-                            <div class="flex justify-between items-center w-full mb-2">
+                        <div class="flex justify-between items-center px-2">
+                            <div>
                                 <h4 class="font-bold text-lg">${p.name}</h4>
-                                <span class="font-bold text-lg">${formatRupiah(p.price)}</span>
-                                
+                                <p class="text-xs text-gray-400 font-medium">${p.desc}</p>
                             </div>
-                            <p class="text-xs text-gray-400 font-medium">${p.desc}</p>
+                            <span class="font-bold text-lg">${formatRupiah(p.price)}</span>
                         </div>
                     </div>
                 `;
@@ -343,7 +340,6 @@
             }
         }
 
-        // PENTING: Lempar user ke halaman search dengan Parameter URL
         function applyLocationFilter() {
             const selectedUnivId = document.getElementById('univSelect').value;
             window.location.href = `search.html?univ=${selectedUnivId}&area=${activeAreaFilter}`;
