@@ -78,17 +78,17 @@
             <div class="space-y-3 mb-6">
                 <div class="flex justify-between text-gray-500 text-sm font-medium">
                     <span>Product Price</span>
-                    <span class="text-black font-bold">Rp 850,000</span>
+                    <span class="text-black font-bold">(loading price)</span>
                 </div>
                 <div class="flex justify-between text-gray-500 text-sm font-medium">
                     <span>Admin Fee</span>
-                    <span class="text-black font-bold">Rp 2,000</span>
+                    <span class="text-black font-bold">Rp 2.500</span>
                 </div>
             </div>
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Payment</p>
-                    <p class="text-3xl font-bold text-dark-green">Rp 852,000</p>
+                    <p class="text-3xl font-bold text-dark-green">(loading price)</p>
                 </div>
                 <button onclick="processPayment()" class="bg-dark-green text-white px-10 py-4 rounded-full font-bold shadow-xl active:scale-95 transition-all">
                     Pay Now
@@ -131,7 +131,7 @@
                 const priceElements = document.querySelectorAll('.text-black.font-bold');
                 priceElements[0].innerText = formatRupiah(product.price);
                 
-                const adminFee = 2000;
+                const adminFee = 2500;
                 const total = product.price + adminFee;
                 document.querySelector('.text-3xl.font-bold.text-dark-green').innerText = formatRupiah(total);
             } else {
