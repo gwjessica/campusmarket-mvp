@@ -19,6 +19,18 @@
 </head>
 <body class="max-w-md mx-auto min-h-screen relative pb-32">
 
+    <div id="custom-alert" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-6">
+        <div class="bg-[#FDFCE5] w-full max-w-xs rounded-[35px] p-6 text-center border-2 border-[#062C1E]/10 shadow-2xl scale-95 transition-all">
+            <div class="w-12 h-12 bg-[#EBEAD2] rounded-full flex items-center justify-center mx-auto mb-4 text-dark-green">
+                <i data-lucide="info" id="alert-icon" class="w-6 h-6"></i>
+            </div>
+            <h3 id="alert-title" class="font-bold text-dark-green text-lg mb-2">Notification</h3>
+            <p id="alert-message" class="text-xs text-gray-500 leading-relaxed mb-6">Message content goes here.</p>
+            <button onclick="closeAlert()" class="w-full bg-dark-green text-white font-bold py-3.5 rounded-2xl text-xs tracking-widest active:scale-95 transition-all">
+                OKAY
+            </button>
+        </div>
+    </div>
     <header class="p-6 flex justify-between items-center bg-[#FDFCE5] sticky top-0 z-50">
         <button onclick="window.location.href='home.html'"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
         <h1 class="text-lg font-bold text-dark-green uppercase tracking-widest">Orders</h1>
@@ -33,10 +45,7 @@
         </div>
     </div>
 
-    <main class="px-6" id="orders-container">
-        
-
-    </main>
+    <main class="px-6" id="orders-container"></main>
 
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#EBEAD2]/80 backdrop-blur-md rounded-full p-2 flex justify-between items-center shadow-2xl z-40 border border-white/20">
         <button onclick="window.location.href='home.html'" class="p-4 text-gray-600"><i data-lucide="home" class="w-5 h-5"></i></button>
@@ -48,16 +57,35 @@
 
     <script src="db.js"></script>
     <script>
+        // --- LOGIK ALERT CUSTOM ---
+        function showAlert(message, title = "Notification", iconName = "info") {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-message').innerText = message;
+            
+            const iconEl = document.getElementById('alert-icon');
+            if (iconEl) iconEl.setAttribute('data-lucide', iconName);
+
+            const overlay = document.getElementById('custom-alert');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeAlert() {
+            const overlay = document.getElementById('custom-alert');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
         function renderOrders(tabName) {
             const currentUser = getCurrentUser();
             if (!currentUser) return window.location.href = 'login.html';
 
             const allOrders = getOrders();
             const allProducts = getProducts();
-            const allReviews = getReviews() || []; // Ambil dari db.js
+            const allReviews = getReviews() || []; 
             const container = document.getElementById('orders-container');
             
-            // Filter: Hanya order milik user yang login DAN statusnya cocok dengan tab
             const filteredOrders = allOrders.filter(o => o.user_id === currentUser.id && o.status === tabName);
 
             if (filteredOrders.length === 0) {
@@ -65,7 +93,7 @@
                 return;
             }
 
-            container.innerHTML = ''; // Clear container
+            container.innerHTML = ''; 
 
             filteredOrders.forEach(order => {
                 const product = allProducts.find(p => p.id === order.product_id);
@@ -118,7 +146,6 @@
                 } 
                 // COLLECTED
                 else { 
-                    // Cek apakah order ini sudah punya review
                     const hasReview = allReviews.some(r => r.order_id === order.id);
                     
                     cardHTML = `
@@ -157,28 +184,26 @@
                 }
                 container.innerHTML += cardHTML;
             });
-            lucide.createIcons(); // Panggil setelah merender semua
+            lucide.createIcons(); 
         }
 
         // --- FUNGSI SUBMIT RATING ---
         function submitRating(orderId, sellerId, score) {
-            // Gunakan fungsi addReview yang ada di db.js
             addReview(orderId, sellerId, score, "Great transaction!"); 
-            
-            // Re-render tab collected agar form rating hilang dan muncul tanda centang
+            showAlert("Thank you for your review!", "Rating Saved", "star");
             renderOrders('collected');
         }
 
-        // --- FUNGSI SIMULASI TRANSAKSI ---
+        // --- FUNGSI SIMULASI TRANSAKSI (Menggunakan showAlert Kustom) ---
         function payOrder(id) {
             updateOrderStatus(id, 'ongoing');
-            alert("Payment success! Item is now ongoing.");
+            showAlert("Payment successful! Your order is being processed.", "Success", "check-circle-2");
             switchTab('ongoing');
         }
 
         function completeOrder(id) {
             updateOrderStatus(id, 'collected');
-            alert("Item collected! Transaction finished.");
+            showAlert("Item collected! Thank you for reducing waste.", "Completed", "package");
             switchTab('collected');
         }
 

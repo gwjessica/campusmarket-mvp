@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - CampusMarket</title>
+    <title>Campus Reuse</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -20,6 +20,18 @@
 </head>
 <body class="max-w-md mx-auto min-h-screen relative pb-24 overflow-x-hidden">
 
+    <div id="custom-alert" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-6">
+        <div class="bg-[#FDFCE5] w-full max-w-xs rounded-[35px] p-6 text-center border-2 border-[#062C1E]/10 shadow-2xl scale-95 transition-all">
+            <div class="w-12 h-12 bg-[#EBEAD2] rounded-full flex items-center justify-center mx-auto mb-4 text-dark-green">
+                <i data-lucide="info" class="w-6 h-6"></i>
+            </div>
+            <h3 id="alert-title" class="font-bold text-dark-green text-lg mb-2">Notification</h3>
+            <p id="alert-message" class="text-xs text-gray-500 leading-relaxed mb-6">Message content goes here.</p>
+            <button onclick="closeAlert()" class="w-full bg-dark-green text-white font-bold py-3.5 rounded-2xl text-xs tracking-widest active:scale-95 transition-all">
+                OKAY
+            </button>
+        </div>
+    </div>
     <div id="filter-overlay" class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden flex justify-center">
         <div class="absolute bottom-0 w-full max-w-md bg-[#FDFCE5] rounded-t-[40px] p-8 animate-slide-up">
             <div class="flex justify-between items-center mb-8">
@@ -120,7 +132,30 @@
 
     <script src="db.js"></script>
     <script>
-        if (!getCurrentUser()) window.location.href = 'login.html';
+        // --- LOGIK ALERT CUSTOM ---
+        function showAlert(message, title = "Notification") {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-message').innerText = message;
+            
+            const overlay = document.getElementById('custom-alert');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeAlert() {
+            const overlay = document.getElementById('custom-alert');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
+        // Modifikasi pengalihan login agar menggunakan alert kustom
+        if (!getCurrentUser()) {
+            showAlert("Sesi Anda telah berakhir. Silakan login kembali.", "Auth Required");
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        }
 
         let activeCategory = null; 
         let activeAreaFilter = 'campus'; 
@@ -169,6 +204,7 @@
             if (liked) {
                 icon.setAttribute('fill', '#ef4444');
                 icon.setAttribute('stroke', '#ef4444');
+                showAlert("Item added to your saved list!", "Saved");
             } else {
                 icon.setAttribute('fill', 'none');
                 icon.setAttribute('stroke', 'currentColor');
@@ -180,10 +216,8 @@
             let products = getProducts();
             const allOrders = getOrders(); 
             
-            // --- FILTER: SEMBUNYIKAN BARANG YANG SUDAH SOLD / DIORDER ---
             products = products.filter(p => !allOrders.some(o => o.product_id === p.id));
             
-            // --- FILTER KATEGORI ---
             if (activeCategory) {
                 products = products.filter(p => {
                     let itemCat = p.category;
@@ -226,7 +260,7 @@
                         <div class="flex justify-between items-center px-2">
                             <div>
                                 <h4 class="font-bold text-lg">${p.name}</h4>
-                                <p class="text-xs text-gray-400 font-medium">${p.desc}</p>
+                                <p class="text-xs text-gray-400 font-medium truncate w-[180px]">${p.desc}</p>
                             </div>
                             <span class="font-bold text-lg">${formatRupiah(p.price)}</span>
                         </div>
@@ -257,7 +291,6 @@
             renderCategories();
             renderProducts();
             
-            // Set User Univ Text in header
             const user = getCurrentUser();
             if(user) {
                 const univData = getUnivDetails(user.univ_id);
@@ -265,7 +298,6 @@
             }
         };
 
-        // --- FILTER & MAP LOGIC ---
         let map; 
         let marker; 
 
