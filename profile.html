@@ -144,24 +144,33 @@
     <script src="db.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // 1. RENDER ICON DULUAN: Taruh di paling atas supaya apapun yang terjadi, UI icon tetap aman
+            // 1. RENDER ICON DULUAN
             lucide.createIcons();
 
             const user = getCurrentUser();
             
             if (user) {
                 try {
-                    // Update Data User Text & Avatar
+                    // Update Data User Text
                     document.querySelector('h2.text-3xl').innerText = user.name;
                     
-                    const avatarImg = document.querySelector('img.object-cover');
-                    if (avatarImg) avatarImg.src = user.avatar; 
+                    // FIX LOGIC AVATAR DINAMIS
+                    const avatarImg = document.getElementById('user-avatar');
+                    const placeholderIcon = document.getElementById('placeholder-icon');
+                    
+                    if (avatarImg && user.avatar) {
+                        avatarImg.src = user.avatar;
+                        avatarImg.classList.remove('hidden'); // Memunculkan gambar avatar asli / inisial UI
+                        if (placeholderIcon) {
+                            placeholderIcon.classList.add('hidden'); // Menyembunyikan icon user kosong bawaan Lucide
+                        }
+                    }
                     
                     // Ambil detail kampus berdasarkan univ_id
                     const userUniv = getUnivDetails(user.univ_id);
                     const univName = userUniv ? userUniv.name : user.univ || "Petra Christian University";
                     
-                    // Cara lebih aman mencari elemen info (tanpa pakai kurung siku di querySelector)
+                    // Mengisi info kampus & join date
                     const infoContainer = document.querySelector('div.tracking-widest.mb-6');
                     if (infoContainer) {
                         const spans = infoContainer.querySelectorAll('span');
@@ -189,7 +198,6 @@
         });
 
         function logoutUser() {
-            // Menghapus hanya session user, bukan database barang/user
             localStorage.removeItem('cm_current_session');
             alert("Berhasil logout!");
             window.location.href = 'login.html';
