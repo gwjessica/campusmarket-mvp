@@ -22,10 +22,25 @@
         .body, html {
             scrollbar-width: none;
         }
+        .bg-dark-green {
+            background-color: #062C1E;
+        }
     </style>
 </head>
-<body class="flex flex-col min-h-screen items-center justify-center px-8">
+<body class="flex flex-col min-h-screen items-center justify-center px-8 relative">
 
+    <div id="custom-alert" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-6">
+        <div class="bg-[#FDFCE5] w-full max-w-xs rounded-[35px] p-6 text-center border-2 border-[#062C1E]/10 shadow-2xl scale-95 transition-all">
+            <div class="w-12 h-12 bg-[#EBEAD2] rounded-full flex items-center justify-center mx-auto mb-4 text-dark-green">
+                <i data-lucide="info" id="alert-icon" class="w-6 h-6"></i>
+            </div>
+            <h3 id="alert-title" class="font-bold text-dark-green text-lg mb-2">Notification</h3>
+            <p id="alert-message" class="text-xs text-gray-500 leading-relaxed mb-6">Message content goes here.</p>
+            <button id="alert-btn" class="w-full bg-dark-green text-white font-bold py-3.5 rounded-2xl text-xs tracking-widest active:scale-95 transition-all">
+                OKAY
+            </button>
+        </div>
+    </div>
     <div class="text-center mb-10">
         <div class="flex items-center justify-center gap-2 mb-4">
             <img src="logo.png" alt="logo" class="w-6">
@@ -83,10 +98,47 @@
     <script src="db.js"></script>
 
     <script>
-        // 1. Cek apakah sudah login (Auto-login)
+        // --- LOGIK ALERT CUSTOM VIA CALLBACK ---
+        function showAlert(message, title = "Notification", iconName = "info", callback = null) {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-message').innerText = message;
+            
+            const iconEl = document.getElementById('alert-icon');
+            if (iconEl) iconEl.setAttribute('data-lucide', iconName);
+
+            const overlay = document.getElementById('custom-alert');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            lucide.createIcons();
+
+            const alertButton = document.getElementById('alert-btn');
+            alertButton.onclick = function() {
+                closeAlert();
+                if (callback && typeof callback === 'function') {
+                    callback();
+                }
+            };
+        }
+
+        function closeAlert() {
+            const overlay = document.getElementById('custom-alert');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
+        // 1. Cek status login & cek parameter URL (Redirect dari logout)
         window.onload = () => {
+            lucide.createIcons();
+
             if (getCurrentUser()) {
                 window.location.href = 'home.html';
+                return;
+            }
+
+            // DETEKSI LOGOUT: Cek apakah mendarat di sini karena klik tombol logout
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('status') === 'logout') {
+                showAlert("Anda telah berhasil keluar dari sistem.", "Logged Out", "log-out");
             }
         };
 
@@ -98,26 +150,26 @@
 
             if (emailInput.endsWith('.ac.id')) {
                 const users = getUsers();
-                // Cari user yang email DAN password-nya cocok
                 const user = users.find(u => u.email.toLowerCase() === emailInput && u.password === passwordInput);
 
                 if (user) {
                     const sessionWrapper = {
-                        userData: user,       // Menyimpan data profile user
-                        loginTime: Date.now() // Menyimpan timestamp dalam milidetik saat klik login/daftar
+                        userData: user,
+                        loginTime: Date.now()
                     };
                     localStorage.setItem('cm_current_session', JSON.stringify(sessionWrapper));
-                    // localStorage.setItem('cm_current_session', JSON.stringify(user));
-                    alert(`Welcome back, ${user.name}!`);
-                    window.location.href = 'home.html';
+                    
+                    // Tampilkan custom popup dulu, setelah diklik OK baru redirect
+                    showAlert(`Selamat datang kembali, ${user.name}!`, "Login Success", "check-circle", function() {
+                        window.location.href = 'home.html';
+                    });
                 } else {
-                    alert("Email atau Password salah. Silakan coba lagi.");
+                    showAlert("Email atau Password salah. Silakan coba lagi.", "Login Failed", "alert-circle");
                 }
             } else {
-                alert("Mohon gunakan email kampus (.ac.id)");
+                showAlert("Mohon gunakan email resmi kampus (.ac.id)", "Invalid Email", "shield-alert");
             }
         });
     </script>
-    <script>lucide.createIcons();</script>
 </body>
 </html>

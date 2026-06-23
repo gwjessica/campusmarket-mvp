@@ -19,6 +19,7 @@
 </head>
 <body class="max-w-md mx-auto min-h-screen relative pb-32">
 
+    <!-- ==================== CUSTOM ALERT MODAL ==================== -->
     <div id="custom-alert" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-6">
         <div class="bg-[#FDFCE5] w-full max-w-xs rounded-[35px] p-6 text-center border-2 border-[#062C1E]/10 shadow-2xl scale-95 transition-all">
             <div class="w-12 h-12 bg-[#EBEAD2] rounded-full flex items-center justify-center mx-auto mb-4 text-dark-green">
@@ -31,6 +32,8 @@
             </button>
         </div>
     </div>
+    <!-- ============================================================ -->
+
     <header class="p-6 flex justify-between items-center bg-[#FDFCE5] sticky top-0 z-50">
         <button onclick="window.location.href='home.html'"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
         <h1 class="text-lg font-bold text-dark-green uppercase tracking-widest">Orders</h1>
@@ -57,7 +60,6 @@
 
     <script src="db.js"></script>
     <script>
-        // --- LOGIK ALERT CUSTOM ---
         function showAlert(message, title = "Notification", iconName = "info") {
             document.getElementById('alert-title').innerText = title;
             document.getElementById('alert-message').innerText = message;
@@ -133,13 +135,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="grid grid-cols-2 gap-4 mb-6">
                                 <div class="bg-white/60 p-5 rounded-3xl"><p class="text-[9px] font-bold text-gray-400 uppercase mb-1">Date</p><p class="font-bold text-sm">${order.date}</p></div>
                                 <div class="bg-white/60 p-5 rounded-3xl"><p class="text-[9px] font-bold text-gray-400 uppercase mb-1">Status</p><p class="font-bold text-sm text-green-700">● Ready for Pickup</p></div>
                             </div>
-                            <div onclick="completeOrder('${order.id}')" class="bg-dark-green p-2 rounded-full flex items-center relative cursor-pointer group active:scale-95 transition-transform">
-                                <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center text-dark-green shadow-lg z-10"><i data-lucide="check" class="w-5 h-5"></i></div>
-                                <p class="text-white text-[10px] font-bold tracking-widest absolute inset-0 flex items-center justify-center pl-6">CLICK TO COMPLETE</p>
+                            
+                            <!-- Kancing Aksi Kolom Berpasangan -->
+                            <div class="space-y-3">
+                                <!-- BUTTON GUIDE: Mengarahkan langsung ke detail room chat penjual sesuai konteks produk -->
+                                <button onclick="window.location.href='chat-detail.html?user_id=${product.seller_id}&product_id=${product.id}'" 
+                                    class="w-full bg-white/80 border border-dark-green/20 text-dark-green text-xs font-bold py-4 rounded-full flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all">
+                                    <i data-lucide="message-square" class="w-4 h-4"></i> Chat Seller to Arrange Meetup
+                                </button>
+                                
+                                <div onclick="completeOrder('${order.id}')" class="bg-dark-green p-2 rounded-full flex items-center relative cursor-pointer group active:scale-95 transition-transform">
+                                    <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center text-dark-green shadow-lg z-10"><i data-lucide="check" class="w-5 h-5"></i></div>
+                                    <p class="text-white text-[10px] font-bold tracking-widest absolute inset-0 flex items-center justify-center pl-6">CLICK TO COMPLETE</p>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -187,14 +199,12 @@
             lucide.createIcons(); 
         }
 
-        // --- FUNGSI SUBMIT RATING ---
         function submitRating(orderId, sellerId, score) {
             addReview(orderId, sellerId, score, "Great transaction!"); 
             showAlert("Thank you for your review!", "Rating Saved", "star");
             renderOrders('collected');
         }
 
-        // --- FUNGSI SIMULASI TRANSAKSI (Menggunakan showAlert Kustom) ---
         function payOrder(id) {
             updateOrderStatus(id, 'ongoing');
             showAlert("Payment successful! Your order is being processed.", "Success", "check-circle-2");
@@ -213,7 +223,6 @@
             renderOrders(tabName);
         }
 
-        // --- INIT ---
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
             const activeTab = params.get('tab') || 'topay';

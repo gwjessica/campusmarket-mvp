@@ -20,6 +20,18 @@
 </head>
 <body class="max-w-md mx-auto min-h-screen relative pb-32">
 
+    <div id="custom-alert" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-6">
+        <div class="bg-[#FDFCE5] w-full max-w-xs rounded-[35px] p-6 text-center border-2 border-[#062C1E]/10 shadow-2xl scale-95 transition-all">
+            <div class="w-12 h-12 bg-[#EBEAD2] rounded-full flex items-center justify-center mx-auto mb-4 text-dark-green">
+                <i data-lucide="info" id="alert-icon" class="w-6 h-6"></i>
+            </div>
+            <h3 id="alert-title" class="font-bold text-dark-green text-lg mb-2">Notification</h3>
+            <p id="alert-message" class="text-xs text-gray-500 leading-relaxed mb-6">Message content goes here.</p>
+            <button id="alert-btn" class="w-full bg-dark-green text-white font-bold py-3.5 rounded-2xl text-xs tracking-widest active:scale-95 transition-all">
+                OKAY
+            </button>
+        </div>
+    </div>
     <header class="p-6 flex gap-2 items-center">
         <img src="logo.png" alt="logo" class="w-6 h-6">
         <h1 class="text-xl font-bold text-dark-green flex items-center gap-2 italic">
@@ -29,17 +41,13 @@
 
     <main class="flex flex-col items-center px-8">
         <div class="relative mb-6">
-            <!-- Ganti gambar Julian Green dengan kontainer avatar kosongan pakai Lucide Icon -->
             <div id="avatar-container" class="w-32 h-32 rounded-[40px] overflow-hidden border-4 border-white shadow-sm bg-[#EBEAD2] flex items-center justify-center">
-                <!-- Tampilan awal: Icon user kosongan -->
                 <i data-lucide="user" id="placeholder-icon" class="w-12 h-12 text-gray-400"></i>
-                <!-- Element gambar disembunyikan dulu (hidden), baru diisi & dimunculkan via JS nanti -->
                 <img id="user-avatar" src="" class="w-full h-full object-cover hidden">
             </div>
             <div class="absolute bottom-1 -right-1 bg-[#D4E89C] border-2 border-white rounded-full p-1 leading-none text-[8px]">✅</div>
         </div>
 
-        <!-- Teks dirubah menjadi status loading awal -->
         <h2 class="text-3xl font-bold text-dark-green mb-1">Loading...</h2>
         <div class="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6">
             <span>📍 loading campus name</span>
@@ -67,34 +75,9 @@
             </div>
         </div>
 
-        <!-- <div class="w-full bg-cream-card/50 rounded-[45px] p-8 mb-10 relative">
-            <div class="flex justify-between items-start mb-4">
-                <div class="bg-white p-3 rounded-2xl shadow-sm"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
-                <span class="text-4xl font-bold text-dark-green" id="listing-count">5</span>
-            </div>
-            <h3 class="font-bold text-dark-green text-lg mb-1">Active Listings</h3>
-            <p class="text-xs text-gray-500 leading-relaxed mb-6">Your items currently visible to the campus community.</p>
-            
-            <div class="flex -space-x-3">
-                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=100" class="w-10 h-10 rounded-full border-2 border-white object-cover">
-                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100" class="w-10 h-10 rounded-full border-2 border-white object-cover">
-                <img src="https://images.unsplash.com/photo-1587829741301-dc798b83bac1?w=100" class="w-10 h-10 rounded-full border-2 border-white object-cover">
-                <div class="w-10 h-10 rounded-full border-2 border-white bg-[#D1D0B8] flex items-center justify-center text-[10px] font-bold text-gray-600">+2</div>
-            </div>
-        </div> -->
-
         <div class="w-full space-y-4 mb-10 text-left">
             <h3 class="font-bold text-dark-green mb-4 ml-2">Account Settings</h3>
             
-            <!-- <div onclick="window.location.href='sales-history.html'" class="bg-cream-card/30 rounded-[35px] p-6 flex items-center gap-5 cursor-pointer hover:bg-cream-card/50 transition-all">
-                <div><i data-lucide="trending-up" class="w-5 h-5"></i></div>
-                <div class="flex-1">
-                    <h4 class="font-bold text-sm">Sales History</h4>
-                    <p class="text-[10px] text-gray-400 font-bold">See your past sales</p>
-                </div>
-                <span class="text-gray-300">›</span>
-            </div> -->
-
             <div class="bg-cream-card/30 rounded-[35px] p-6 flex items-center gap-5 cursor-pointer">
                 <div><i data-lucide="bell" class="w-5 h-5"></i></div>
                 <div class="flex-1">
@@ -143,34 +126,58 @@
 
     <script src="db.js"></script>
     <script>
+        // --- LOGIK ALERT CUSTOM VIA CALLBACK ---
+        function showAlert(message, title = "Notification", iconName = "info", callback = null) {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-message').innerText = message;
+            
+            const iconEl = document.getElementById('alert-icon');
+            if (iconEl) iconEl.setAttribute('data-lucide', iconName);
+
+            const overlay = document.getElementById('custom-alert');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            lucide.createIcons();
+
+            // Pasang event klik pada tombol OKAY untuk mengeksekusi callback penunda halaman
+            const alertButton = document.getElementById('alert-btn');
+            alertButton.onclick = function() {
+                closeAlert();
+                if (callback && typeof callback === 'function') {
+                    callback();
+                }
+            };
+        }
+
+        function closeAlert() {
+            const overlay = document.getElementById('custom-alert');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
-            // 1. RENDER ICON DULUAN
             lucide.createIcons();
 
             const user = getCurrentUser();
             
             if (user) {
                 try {
-                    // Update Data User Text
                     document.querySelector('h2.text-3xl').innerText = user.name;
                     
-                    // FIX LOGIC AVATAR DINAMIS
                     const avatarImg = document.getElementById('user-avatar');
                     const placeholderIcon = document.getElementById('placeholder-icon');
                     
                     if (avatarImg && user.avatar) {
                         avatarImg.src = user.avatar;
-                        avatarImg.classList.remove('hidden'); // Memunculkan gambar avatar asli / inisial UI
+                        avatarImg.classList.remove('hidden');
                         if (placeholderIcon) {
-                            placeholderIcon.classList.add('hidden'); // Menyembunyikan icon user kosong bawaan Lucide
+                            placeholderIcon.classList.add('hidden');
                         }
                     }
                     
-                    // Ambil detail kampus berdasarkan univ_id
                     const userUniv = getUnivDetails(user.univ_id);
                     const univName = userUniv ? userUniv.name : user.univ || "Petra Christian University";
                     
-                    // Mengisi info kampus & join date
                     const infoContainer = document.querySelector('div.tracking-widest.mb-6');
                     if (infoContainer) {
                         const spans = infoContainer.querySelectorAll('span');
@@ -180,7 +187,6 @@
                         }
                     }
                     
-                    // Hitung jumlah listing produk aktif milik user
                     const products = getProducts();
                     const myProducts = products.filter(p => p.seller_id === user.id);
                     const listingCountEl = document.getElementById('listing-count');
@@ -192,15 +198,17 @@
                     console.error("Ada masalah saat memuat data profil:", error);
                 }
             } else {
-                // Jika tidak login, arahkan ke login
-                window.location.href = 'login.html';
+                // Sesi habis juga memanggil pop-up kustom sebelum ditendang keluar
+                showAlert("Sesi Anda telah berakhir. Silakan login kembali.", "Auth Required", "lock", function() {
+                    window.location.href = 'login.html';
+                });
             }
         });
 
+        // --- SEKARANG LOGOUT MEMAKAI POP-UP KUSTOM ---
         function logoutUser() {
             localStorage.removeItem('cm_current_session');
-            alert("Berhasil logout!");
-            window.location.href = 'login.html';
+            window.location.href = 'login.html?status=logout'; // Langsung oper data parameter ke halaman login
         }
     </script>
 </body>

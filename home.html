@@ -133,14 +133,26 @@
     <script src="db.js"></script>
     <script>
         // --- LOGIK ALERT CUSTOM ---
-        function showAlert(message, title = "Notification") {
+        function showAlert(message, title = "Notification", iconName = "info", callback = null) {
             document.getElementById('alert-title').innerText = title;
             document.getElementById('alert-message').innerText = message;
             
+            const iconEl = document.getElementById('alert-icon');
+            if (iconEl) iconEl.setAttribute('data-lucide', iconName);
+
             const overlay = document.getElementById('custom-alert');
             overlay.classList.remove('hidden');
             overlay.classList.add('flex');
             lucide.createIcons();
+
+            // Simpan fungsi callback (misal aksi pindah halaman) ke dalam tombol OKAY
+            const alertButton = overlay.querySelector('button');
+            alertButton.onclick = function() {
+                closeAlert();
+                if (callback && typeof callback === 'function') {
+                    callback();
+                }
+            };
         }
 
         function closeAlert() {
@@ -151,7 +163,7 @@
 
         // Modifikasi pengalihan login agar menggunakan alert kustom
         if (!getCurrentUser()) {
-            showAlert("Sesi Anda telah berakhir. Silakan login kembali.", "Auth Required");
+            showAlert("Sesi Anda telah berakhir. Silakan login kembali.", "Auth Required", "lock");
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 2000);
@@ -204,10 +216,11 @@
             if (liked) {
                 icon.setAttribute('fill', '#ef4444');
                 icon.setAttribute('stroke', '#ef4444');
-                showAlert("Item added to your saved list!", "Saved");
+                showAlert("Item added to your saved list!", "Saved", "heart");
             } else {
                 icon.setAttribute('fill', 'none');
                 icon.setAttribute('stroke', 'currentColor');
+                showAlert("Item removed from your saved list.", "Removed", "heart-off");
             }
             lucide.createIcons();
         }

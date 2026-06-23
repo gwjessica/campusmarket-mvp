@@ -118,6 +118,25 @@ const defaultReviews = [
     }
 ];
 
+const defaultMessages = [
+    {
+        id: "msg_1",
+        sender_id: "user_1", // Julian Green
+        receiver_id: "user_3", // Ceritanya ini kamu (Jessica)
+        product_id: 1, // Silence Pro Wireless
+        text: "Is the Silence Pro Headphones still available?",
+        timestamp: Date.now() - 120000 // 2 menit lalu
+    },
+    {
+        id: "msg_2",
+        sender_id: "user_2", // Sarah Miller
+        receiver_id: "user_3", // Jessica
+        product_id: 2, // Vintage Canon AE-1
+        text: "The Vintage Camera looks amazing! Can I check it out tomorrow?",
+        timestamp: Date.now() - 2700000 // 45 menit lalu
+    }
+];
+
 // --- FUNGSI CORE DATABASE ---
 
 function initDB() {
@@ -138,6 +157,9 @@ function initDB() {
     }
     if (!localStorage.getItem('cm_reviews')) {
         localStorage.setItem('cm_reviews', JSON.stringify(defaultReviews));
+    }
+    if (!localStorage.getItem('cm_messages')) {
+        localStorage.setItem('cm_messages', JSON.stringify(defaultMessages));
     }
 }
 
@@ -267,6 +289,57 @@ function getSellerRating(sellerId) {
 
 function formatRupiah(amount) {
     return 'Rp ' + Number(amount).toLocaleString('id-ID');
+}
+
+function getAllMessages() {
+    return JSON.parse(localStorage.getItem('cm_messages')) || [];
+}
+
+// Mengambil list rombongan room chat unik milik user aktif
+// Mengambil daftar room chat unik (1 User = 1 Room) berdasarkan pesan terakhir
+function getChatList() {
+    const user = getCurrentUser();
+    if (!user) return [];
+    const allMsgs = getAllMessages();
+    
+    const rooms = {};
+    
+    allMsgs.forEach(msg => {
+        if (msg.sender_id === user.id || msg.receiver_id === user.id) {
+            const partnerId = msg.sender_id === user.id ? msg.receiver_id : msg.sender_id;
+            
+            // Simpan atau timpa dengan pesan yang paling baru
+            if (!rooms[partnerId] || msg.timestamp > rooms[partnerId].timestamp) {
+                rooms[partnerId] = {
+                    partnerId: partnerId,
+                    lastText: msg.text,
+                    timestamp: msg.timestamp
+                };
+            }
+        }
+    });
+    
+    return Object.values(rooms).sort((a, b) => b.timestamp - a.timestamp);
+}
+
+// Mengirim chat baru (product_id disimpan sebagai penanda konteks pesan itu dikirim)
+function sendMessage(receiverId, productId, text) {
+    const user = getCurrentUser();
+    if (!user) return null;
+    
+    const allMsgs = getAllMessages();
+    const newMsg = {
+        id: "msg_" + Date.now(),
+        sender_id: user.id,
+        receiver_id: receiverId,
+        product_id: productId ? parseInt(productId) : null, // Bisa null kalau chat biasa
+        text: text,
+        timestamp: Date.now()
+    };
+    
+    allMsgs.push(newMsg);
+    localStorage.setItem('cm_messages', JSON.stringify(allMsgs));
+    return newMsg;
 }
 
 // Initialize
