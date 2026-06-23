@@ -102,7 +102,12 @@
                 const user = users.find(u => u.email.toLowerCase() === emailInput && u.password === passwordInput);
 
                 if (user) {
-                    localStorage.setItem('cm_current_session', JSON.stringify(user));
+                    const sessionWrapper = {
+                        userData: user,       // Menyimpan data profile user
+                        loginTime: Date.now() // Menyimpan timestamp dalam milidetik saat klik login/daftar
+                    };
+                    localStorage.setItem('cm_current_session', JSON.stringify(sessionWrapper));
+                    // localStorage.setItem('cm_current_session', JSON.stringify(user));
                     alert(`Welcome back, ${user.name}!`);
                     window.location.href = 'home.html';
                 } else {

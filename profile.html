@@ -29,17 +29,22 @@
 
     <main class="flex flex-col items-center px-8">
         <div class="relative mb-6">
-            <div class="w-32 h-32 rounded-[40px] overflow-hidden border-4 border-white shadow-sm">
-                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300" class="w-full h-full object-cover">
+            <!-- Ganti gambar Julian Green dengan kontainer avatar kosongan pakai Lucide Icon -->
+            <div id="avatar-container" class="w-32 h-32 rounded-[40px] overflow-hidden border-4 border-white shadow-sm bg-[#EBEAD2] flex items-center justify-center">
+                <!-- Tampilan awal: Icon user kosongan -->
+                <i data-lucide="user" id="placeholder-icon" class="w-12 h-12 text-gray-400"></i>
+                <!-- Element gambar disembunyikan dulu (hidden), baru diisi & dimunculkan via JS nanti -->
+                <img id="user-avatar" src="" class="w-full h-full object-cover hidden">
             </div>
             <div class="absolute bottom-1 -right-1 bg-[#D4E89C] border-2 border-white rounded-full p-1 leading-none text-[8px]">✅</div>
         </div>
 
-        <h2 class="text-3xl font-bold text-dark-green mb-1">Julian Green</h2>
+        <!-- Teks dirubah menjadi status loading awal -->
+        <h2 class="text-3xl font-bold text-dark-green mb-1">Loading...</h2>
         <div class="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6">
-            <span>📍 Petra Christian University</span>
+            <span>📍 loading campus name</span>
             <span>•</span>
-            <span>Joined Sept 2023</span>
+            <span>loading join date</span>
         </div>
 
         <button onclick="window.location.href='edit-profile.html'" class="bg-dark-green text-white px-8 py-3 rounded-full text-xs font-bold flex items-center gap-2 mb-10 hover:opacity-90 transition-all">

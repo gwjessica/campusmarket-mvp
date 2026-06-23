@@ -95,7 +95,7 @@
                 id: "user_" + Date.now(),
                 name: name,
                 email: email,
-                password: password, // Note: Di real app ini harus di-hash (PHP/Laravel handle ini)
+                password: password, 
                 avatar: `https://ui-avatars.com/api/?name=${name.replace(' ', '+')}&background=062C1E&color=fff`,
                 univ: campus,
                 joined: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
@@ -106,8 +106,12 @@
             users.push(newUser);
             localStorage.setItem('cm_users', JSON.stringify(users));
 
-            // 4. Auto-Login setelah daftar
-            localStorage.setItem('cm_current_session', JSON.stringify(newUser));
+            // 4. Auto-Login setelah daftar (Sudah di-fix ke newUser)
+            const sessionWrapper = {
+                userData: newUser,     // 🟢 Diubah ke newUser agar datanya masuk
+                loginTime: Date.now()   // Menyimpan timestamp untuk sistem timeout 2 jam
+            };
+            localStorage.setItem('cm_current_session', JSON.stringify(sessionWrapper));
 
             alert("Hore! Akun berhasil dibuat. Selamat datang di CampusMarket!");
             window.location.href = 'home.html';

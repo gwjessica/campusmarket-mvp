@@ -144,9 +144,31 @@ function initDB() {
 function getUniversities() { return JSON.parse(localStorage.getItem('cm_univs')); }
 function getUsers() { return JSON.parse(localStorage.getItem('cm_users')); }
 function getProducts() { return JSON.parse(localStorage.getItem('cm_products')); }
+// Mengambil data session user dan mengecek waktu kedaluwarsa (simulasi session timeout)
 function getCurrentUser() {
-    const user = localStorage.getItem('cm_current_session');
-    return user ? JSON.parse(user) : null;
+    const sessionRaw = localStorage.getItem('cm_current_session');
+    if (!sessionRaw) return null;
+
+    try {
+        const session = JSON.parse(sessionRaw);
+        
+        // Atur waktu kedaluwarsa. Contoh: 2 jam = 2 * 60 * 60 * 1000 milidetik
+        // TIPS DEMO: Ubah jadi (1 * 60 * 1000) kalau mau nyobain timeout dalam 1 menit
+        const EXPIRATION_MS = 2 * 60 * 60 * 1000; 
+        
+        // Cek apakah waktu sekarang sudah melebihi (waktu login + masa aktif)
+        if (Date.now() > session.loginTime + EXPIRATION_MS) {
+            localStorage.removeItem('cm_current_session');
+            console.log("Session expired. User automatically logged out.");
+            return null; // Mengembalikan null agar halaman menganggap belum login
+        }
+        
+        return session.userData;
+    } catch (e) {
+        // Antisipasi data lama sebelum update struktur database dilakukan
+        localStorage.removeItem('cm_current_session');
+        return null;
+    }
 }
 function findUserById(id) { return getUsers().find(u => u.id === id); }
 function getUnivDetails(univId) { return getUniversities().find(u => u.id === univId); }
